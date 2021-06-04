@@ -47,6 +47,12 @@ namespace FinalWork_Demin
             this.SemestrPrintlabel = new System.Windows.Forms.Label();
             this.SemestrprintcomboBox = new System.Windows.Forms.ComboBox();
             this.LoginAndPasswordPanel = new System.Windows.Forms.Panel();
+            this.TypeofExamlabel1 = new System.Windows.Forms.Label();
+            this.DisciplinePrintidcomboBox = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.GroupPrintidcomboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.StudentcomboBox = new System.Windows.Forms.ComboBox();
             this.StudentidcomboBox = new System.Windows.Forms.ComboBox();
             this.DisciplineidcomboBox = new System.Windows.Forms.ComboBox();
             this.GroupidcomboBox = new System.Windows.Forms.ComboBox();
@@ -56,11 +62,6 @@ namespace FinalWork_Demin
             this.authorizationPanel = new System.Windows.Forms.Panel();
             this.label6 = new System.Windows.Forms.Label();
             this.SetUpLabel = new System.Windows.Forms.Label();
-            this.StudentcomboBox = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.GroupPrintidcomboBox = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.DisciplinePrintidcomboBox = new System.Windows.Forms.ComboBox();
             this.LoginAndPasswordPanel.SuspendLayout();
             this.authorizationPanel.SuspendLayout();
             this.SuspendLayout();
@@ -93,6 +94,7 @@ namespace FinalWork_Demin
             this.MarkscomboBox.Name = "MarkscomboBox";
             this.MarkscomboBox.Size = new System.Drawing.Size(283, 39);
             this.MarkscomboBox.TabIndex = 21;
+            this.MarkscomboBox.SelectedIndexChanged += new System.EventHandler(this.MarkscomboBox_SelectedIndexChanged);
             // 
             // TypeOFExamlabel
             // 
@@ -111,6 +113,7 @@ namespace FinalWork_Demin
             this.DisciplinePrintcomboBox.Name = "DisciplinePrintcomboBox";
             this.DisciplinePrintcomboBox.Size = new System.Drawing.Size(248, 39);
             this.DisciplinePrintcomboBox.TabIndex = 24;
+            this.DisciplinePrintcomboBox.SelectedIndexChanged += new System.EventHandler(this.DisciplinePrintcomboBox_SelectedIndexChanged);
             // 
             // GroupPrintComboBox
             // 
@@ -120,13 +123,14 @@ namespace FinalWork_Demin
             this.GroupPrintComboBox.Name = "GroupPrintComboBox";
             this.GroupPrintComboBox.Size = new System.Drawing.Size(175, 39);
             this.GroupPrintComboBox.TabIndex = 25;
+            this.GroupPrintComboBox.SelectedIndexChanged += new System.EventHandler(this.GroupPrintComboBox_SelectedIndexChanged);
             // 
             // TypeOFExamPrintlabel
             // 
             this.TypeOFExamPrintlabel.AutoSize = true;
             this.TypeOFExamPrintlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.TypeOFExamPrintlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.TypeOFExamPrintlabel.Location = new System.Drawing.Point(660, 360);
+            this.TypeOFExamPrintlabel.Location = new System.Drawing.Point(587, 357);
             this.TypeOFExamPrintlabel.Name = "TypeOFExamPrintlabel";
             this.TypeOFExamPrintlabel.Size = new System.Drawing.Size(32, 31);
             this.TypeOFExamPrintlabel.TabIndex = 26;
@@ -139,7 +143,7 @@ namespace FinalWork_Demin
             this.NavigationLabel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.NavigationLabel.Font = new System.Drawing.Font("Century Gothic", 14.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.NavigationLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.NavigationLabel.Location = new System.Drawing.Point(136, 416);
+            this.NavigationLabel.Location = new System.Drawing.Point(574, 422);
             this.NavigationLabel.Name = "NavigationLabel";
             this.NavigationLabel.Size = new System.Drawing.Size(223, 22);
             this.NavigationLabel.TabIndex = 28;
@@ -236,10 +240,12 @@ namespace FinalWork_Demin
             this.SemestrprintcomboBox.Name = "SemestrprintcomboBox";
             this.SemestrprintcomboBox.Size = new System.Drawing.Size(73, 39);
             this.SemestrprintcomboBox.TabIndex = 35;
+            this.SemestrprintcomboBox.SelectedIndexChanged += new System.EventHandler(this.SemestrprintcomboBox_SelectedIndexChanged);
             // 
             // LoginAndPasswordPanel
             // 
             this.LoginAndPasswordPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
+            this.LoginAndPasswordPanel.Controls.Add(this.TypeofExamlabel1);
             this.LoginAndPasswordPanel.Controls.Add(this.DisciplinePrintidcomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.label7);
             this.LoginAndPasswordPanel.Controls.Add(this.GroupPrintidcomboBox);
@@ -273,6 +279,72 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.Name = "LoginAndPasswordPanel";
             this.LoginAndPasswordPanel.Size = new System.Drawing.Size(800, 450);
             this.LoginAndPasswordPanel.TabIndex = 37;
+            // 
+            // TypeofExamlabel1
+            // 
+            this.TypeofExamlabel1.AutoSize = true;
+            this.TypeofExamlabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.TypeofExamlabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.TypeofExamlabel1.Location = new System.Drawing.Point(654, 155);
+            this.TypeofExamlabel1.Name = "TypeofExamlabel1";
+            this.TypeofExamlabel1.Size = new System.Drawing.Size(32, 31);
+            this.TypeofExamlabel1.TabIndex = 98;
+            this.TypeofExamlabel1.Text = "--";
+            // 
+            // DisciplinePrintidcomboBox
+            // 
+            this.DisciplinePrintidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DisciplinePrintidcomboBox.Enabled = false;
+            this.DisciplinePrintidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.DisciplinePrintidcomboBox.Location = new System.Drawing.Point(438, 357);
+            this.DisciplinePrintidcomboBox.Name = "DisciplinePrintidcomboBox";
+            this.DisciplinePrintidcomboBox.Size = new System.Drawing.Size(143, 39);
+            this.DisciplinePrintidcomboBox.TabIndex = 97;
+            // 
+            // label7
+            // 
+            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label7.Location = new System.Drawing.Point(5, 357);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(175, 39);
+            this.label7.TabIndex = 96;
+            this.label7.Text = "Дисциплина";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // GroupPrintidcomboBox
+            // 
+            this.GroupPrintidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.GroupPrintidcomboBox.Enabled = false;
+            this.GroupPrintidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.GroupPrintidcomboBox.Location = new System.Drawing.Point(365, 312);
+            this.GroupPrintidcomboBox.Name = "GroupPrintidcomboBox";
+            this.GroupPrintidcomboBox.Size = new System.Drawing.Size(67, 39);
+            this.GroupPrintidcomboBox.TabIndex = 95;
+            // 
+            // label5
+            // 
+            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label5.Location = new System.Drawing.Point(5, 312);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(173, 39);
+            this.label5.TabIndex = 94;
+            this.label5.Text = "Группа";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // StudentcomboBox
+            // 
+            this.StudentcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.StudentcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.StudentcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.StudentcomboBox.Location = new System.Drawing.Point(184, 112);
+            this.StudentcomboBox.Name = "StudentcomboBox";
+            this.StudentcomboBox.Size = new System.Drawing.Size(464, 39);
+            this.StudentcomboBox.TabIndex = 93;
+            this.StudentcomboBox.SelectedIndexChanged += new System.EventHandler(this.StudentcomboBox_SelectedIndexChanged);
             // 
             // StudentidcomboBox
             // 
@@ -321,7 +393,7 @@ namespace FinalWork_Demin
             this.ExamTicketcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ExamTicketcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.ExamTicketcomboBox.Items.AddRange(new object[] {
-            "-",
+            "0",
             "1",
             "2",
             "3",
@@ -426,6 +498,7 @@ namespace FinalWork_Demin
             this.ExamTicketcomboBox.Name = "ExamTicketcomboBox";
             this.ExamTicketcomboBox.Size = new System.Drawing.Size(80, 39);
             this.ExamTicketcomboBox.TabIndex = 47;
+            this.ExamTicketcomboBox.SelectedIndexChanged += new System.EventHandler(this.ExamTicketcomboBox_SelectedIndexChanged);
             // 
             // NewDocumentbutton
             // 
@@ -434,11 +507,11 @@ namespace FinalWork_Demin
             this.NewDocumentbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.NewDocumentbutton.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.NewDocumentbutton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.NewDocumentbutton.Location = new System.Drawing.Point(9, 399);
+            this.NewDocumentbutton.Location = new System.Drawing.Point(3, 399);
             this.NewDocumentbutton.Name = "NewDocumentbutton";
-            this.NewDocumentbutton.Size = new System.Drawing.Size(124, 45);
+            this.NewDocumentbutton.Size = new System.Drawing.Size(429, 45);
             this.NewDocumentbutton.TabIndex = 46;
-            this.NewDocumentbutton.Text = "Печать";
+            this.NewDocumentbutton.Text = "Сформировать ведомость";
             this.NewDocumentbutton.UseVisualStyleBackColor = false;
             this.NewDocumentbutton.Click += new System.EventHandler(this.NewDocumentbutton_Click);
             // 
@@ -479,61 +552,6 @@ namespace FinalWork_Demin
             this.SetUpLabel.TabIndex = 0;
             this.SetUpLabel.Text = "Итоговая аттестация";
             this.SetUpLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // StudentcomboBox
-            // 
-            this.StudentcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.StudentcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.StudentcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StudentcomboBox.Location = new System.Drawing.Point(184, 112);
-            this.StudentcomboBox.Name = "StudentcomboBox";
-            this.StudentcomboBox.Size = new System.Drawing.Size(464, 39);
-            this.StudentcomboBox.TabIndex = 93;
-            this.StudentcomboBox.SelectedIndexChanged += new System.EventHandler(this.StudentcomboBox_SelectedIndexChanged);
-            // 
-            // label5
-            // 
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label5.Location = new System.Drawing.Point(5, 312);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(173, 39);
-            this.label5.TabIndex = 94;
-            this.label5.Text = "Группа";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // GroupPrintidcomboBox
-            // 
-            this.GroupPrintidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.GroupPrintidcomboBox.Enabled = false;
-            this.GroupPrintidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.GroupPrintidcomboBox.Location = new System.Drawing.Point(365, 312);
-            this.GroupPrintidcomboBox.Name = "GroupPrintidcomboBox";
-            this.GroupPrintidcomboBox.Size = new System.Drawing.Size(67, 39);
-            this.GroupPrintidcomboBox.TabIndex = 95;
-            // 
-            // label7
-            // 
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label7.Location = new System.Drawing.Point(5, 357);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(175, 39);
-            this.label7.TabIndex = 96;
-            this.label7.Text = "Дисциплина";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DisciplinePrintidcomboBox
-            // 
-            this.DisciplinePrintidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DisciplinePrintidcomboBox.Enabled = false;
-            this.DisciplinePrintidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.DisciplinePrintidcomboBox.Location = new System.Drawing.Point(438, 357);
-            this.DisciplinePrintidcomboBox.Name = "DisciplinePrintidcomboBox";
-            this.DisciplinePrintidcomboBox.Size = new System.Drawing.Size(143, 39);
-            this.DisciplinePrintidcomboBox.TabIndex = 97;
             // 
             // ExamsMarksForm
             // 
@@ -585,5 +603,6 @@ namespace FinalWork_Demin
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox GroupPrintidcomboBox;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label TypeofExamlabel1;
     }
 }

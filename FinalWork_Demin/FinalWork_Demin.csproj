@@ -98,11 +98,11 @@
     <Compile Include="VisitsForStudentsForm.Designer.cs">
       <DependentUpon>VisitsForStudentsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="VisitingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="VisitingForm.Designer.cs">
+      <DependentUpon>VisitingForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NavigationForm.cs">
       <SubType>Form</SubType>
@@ -139,8 +139,8 @@
     <EmbeddedResource Include="VisitsForStudentsForm.resx">
       <DependentUpon>VisitsForStudentsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <EmbeddedResource Include="VisitingForm.resx">
+      <DependentUpon>VisitingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NavigationForm.resx">
       <DependentUpon>NavigationForm.cs</DependentUpon>

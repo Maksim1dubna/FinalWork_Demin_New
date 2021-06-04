@@ -21,8 +21,6 @@ namespace FinalWork_Demin
 
         private void LoadDataInto()
         {
-            /*string[] MarksSring = { "Отлично", "Хорошо", "Удовлетворительно", "Неудовлетворительно", "н/я", "-" };
-            string[] NoMarksSring = { "Зачтено", "Не зачтено", "н/я", "-" };*/
             DB db = new DB();
             MySqlCommand command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id GROUP BY группы.группа_id", db.getConnection());
             db.openConnection();
@@ -31,6 +29,8 @@ namespace FinalWork_Demin
             {
                 GroupComboBox.Items.Add(reader.GetString("имя_группы"));
                 GroupidcomboBox.Items.Add(reader.GetString("группа_id"));
+                GroupPrintComboBox.Items.Add(reader.GetString("имя_группы"));
+                GroupPrintidcomboBox.Items.Add(reader.GetString("группа_id"));
             }
             db.closeConnection();
         }
@@ -82,19 +82,103 @@ namespace FinalWork_Demin
         }
         private void DisciplinecomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            MarkscomboBox.Items.Clear();
+            MarkscomboBox.Items.Clear();
             DisciplineidcomboBox.SelectedIndex = DisciplinecomboBox.SelectedIndex;
             DB db = new DB();
             MySqlCommand command = new MySqlCommand("SELECT аттестация.форма_контроля, аттестация.номер_билета, аттестация.оценка_за_аттестацию FROM `аттестация` WHERE семестр = @s AND дисциплина_план_id = @dpid AND `зачетная/табельный`= @zt", db.getConnection());
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
             command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
-            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                int index = MarkscomboBox.Items.IndexOf(reader.GetString("оценка_курсовой_работы"));
+                if (reader.GetString("форма_контроля") == "зачет")
+                {
+                    string[] NoMarksSring = { "Зачтено", "Не зачтено", "н/я", "-" };
+                    MarkscomboBox.Items.AddRange(NoMarksSring);
+                }
+                else 
+                {
+                    string[] MarksSring = { "Отлично", "Хорошо", "Удовлетворительно", "Неудовлетворительно", "н/я", "-" };
+                    MarkscomboBox.Items.AddRange(MarksSring);
+                }
+                TypeofExamlabel1.Text = reader.GetString("форма_контроля");
+                int index = MarkscomboBox.Items.IndexOf(reader.GetString("оценка_за_аттестацию"));
                 MarkscomboBox.SelectedIndex = index;
-                ExamTicketcomboBox.Text = reader.GetString("тема_курсовой_работы");
+                index = ExamTicketcomboBox.Items.IndexOf(reader.GetString("номер_билета"));
+                ExamTicketcomboBox.SelectedIndex = index;
+            }
+            db.closeConnection();
+        }
+        private void MarkscomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("UPDATE аттестация SET аттестация.оценка_за_аттестацию = @moa WHERE семестр = @s AND дисциплина_план_id = @dpid AND `зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@moa", MySqlDbType.VarChar).Value = MarkscomboBox.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
+            db.openConnection();
+            command.ExecuteNonQuery();
+            db.closeConnection();// Закрывать из-за нагрузки на базу данных
+        }
+        private void ExamTicketcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("UPDATE аттестация SET аттестация.номер_билета = @not WHERE семестр = @s AND дисциплина_план_id = @dpid AND `зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@not", MySqlDbType.VarChar).Value = ExamTicketcomboBox.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
+            db.openConnection();
+            command.ExecuteNonQuery();
+            db.closeConnection();// Закрывать из-за нагрузки на базу данных
+        }
+        private void GroupPrintComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GroupPrintidcomboBox.SelectedIndex = GroupPrintComboBox.SelectedIndex;
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT аттестация.семестр FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE группы.группа_id = @gid GROUP BY аттестация.семестр", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                SemestrprintcomboBox.Items.Add(reader.GetString("семестр"));
+            }
+            db.closeConnection();
+        }
+
+        private void SemestrprintcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND группы.группа_id = @gid GROUP BY аттестация.дисциплина_план_id", db.getConnection());
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                DisciplinePrintcomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                DisciplinePrintidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+            }
+            db.closeConnection();
+        }
+
+        private void DisciplinePrintcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisciplinePrintidcomboBox.SelectedIndex = DisciplinePrintcomboBox.SelectedIndex;
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT аттестация.форма_контроля FROM `аттестация` WHERE семестр = @s AND дисциплина_план_id = @dpid", db.getConnection());
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                TypeOFExamPrintlabel.Text = reader.GetString("форма_контроля");
             }
             db.closeConnection();
         }
@@ -367,5 +451,6 @@ namespace FinalWork_Demin
             NavigationForm navigationform = new NavigationForm();
             navigationform.Show();
         }
+
     }
 }
