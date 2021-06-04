@@ -187,7 +187,6 @@ namespace FinalWork_Demin
             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
             Document doc = app.Documents.Add(Visible: true);
             Selection s = app.Selection;
-
             s.ParagraphFormat.SpaceBefore = 0;
             s.ParagraphFormat.SpaceAfter = 0;
             s.ParagraphFormat.LineSpacingRule = (WdLineSpacing)0.5;
@@ -208,26 +207,24 @@ namespace FinalWork_Demin
             s.TypeText("Очная форма обучения\n\n");
             s.Font.Bold = 1;
             DB db = new DB();
-            /////
-            MySqlCommand command = new MySqlCommand("SELECT exams.group_id, exams.TypeOfExam FROM exams INNER JOIN groups ON groups.group_id = exams.group_id " +
-                "INNER JOIN disciplines ON disciplines.discipline_id = exams.discipline_id INNER JOIN lecturers ON lecturers.lecturer_id = exams.lecturer_id " +
-                "WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod GROUP BY  exams.group_id, exams.TypeOfExam", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            MySqlCommand command = new MySqlCommand("SELECT аттестация.форма_контроля FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id WHERE учебныйплан.группа_id = @gid AND аттестация.дисциплина_план_id = @dpid AND аттестация.семестр = @s GROUP BY аттестация.форма_контроля", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                if (reader.GetString("TypeOfExam") == "Экзамен")
+                if (reader.GetString("форма_контроля") == "экзамен")
                     s.TypeText("Экзаменационная ведомость\n\n");
-                else if (reader.GetString("TypeOfExam") == "Зачет")
+                else
                     s.TypeText("Зачетная ведомость\n\n");
             }
             db.closeConnection();
 
             s.Font.Bold = 0;
             s.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
-            command = new MySqlCommand("SELECT groups.course FROM groups WHERE groups.nameofgroup = @nog GROUP BY groups.group_id", db.getConnection());
+            /*command = new MySqlCommand("SELECT groups.course FROM groups WHERE groups.nameofgroup = @nog GROUP BY groups.group_id", db.getConnection());
             command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
@@ -235,59 +232,49 @@ namespace FinalWork_Demin
             {
                 s.TypeText("Курс    " + reader.GetString("course") + "                                  ");
             }
-            db.closeConnection();
-            s.TypeText("Семестр   " + SemestrcomboBox.Text + "                                  ");
-            command = new MySqlCommand("SELECT groups.nameofgroup FROM groups WHERE groups.nameofgroup = @nog GROUP BY groups.group_id", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            db.openConnection();
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                s.TypeText("Группа " + reader.GetString("nameofgroup") + "\n\n");
-            }
+            db.closeConnection();*/
+            s.TypeText("Курс                                       ");
+            s.TypeText("Семестр   " + SemestrprintcomboBox.Text + "                                  ");
+            s.TypeText("Группа " + GroupPrintComboBox.Text + "\n\n");
             db.closeConnection();
             s.ParagraphFormat.LineSpacingRule = (WdLineSpacing)1;
-            s.TypeText("Название предмета: " + DisciplinePrintcomboBox.Text + "\n");
-            command = new MySqlCommand("SELECT lecturers.position, lecturers.secondname, lecturers.firstname, lecturers.thirdname FROM lecturersanddisciplines " +
-                "INNER JOIN lecturers ON lecturers.lecturer_id = lecturersanddisciplines.lecturer_id INNER JOIN disciplines ON disciplines.discipline_id = lecturersanddisciplines.discipline_id " +
-                "INNER JOIN groups WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod AND lecturersanddisciplines.main = 1;", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            string[] DisciplineString = DisciplinePrintcomboBox.Text.Split('/');
+            s.TypeText("Название предмета: " + DisciplineString[1] + "\n");
+            command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество FROM пользователи INNER JOIN преподавательидисциплина ON преподавательидисциплина.`зачетная/табельный`=пользователи.`зачетная/табельный` WHERE преподавательидисциплина.дисциплина_план_id = @dpid AND пользователи.статус_пользователя ='преподаватель'", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                s.TypeText("Преподаватель(должность, Ф.И.О.) " + reader.GetString("position") + " " + reader.GetString("secondname") + " " + reader.GetString("firstname") + " " + reader.GetString("thirdname") + "\n\n");
+                s.TypeText("Преподаватель(должность, Ф.И.О.) "+ reader.GetString("фамилия") + " " + reader.GetString("имя") + " " + reader.GetString("отчество") + "\n\n");
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT students.firstname, students.secondname, students.thirdname, students.numberofzachetki, exams.Mark, exams.dateofexam " +
-                "FROM students INNER JOIN exams ON exams.student_id = students.student_id INNER JOIN groups ON groups.group_id = exams.group_id INNER JOIN disciplines " +
-                "ON disciplines.discipline_id = exams.discipline_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod ORDER BY students.secondname ASC", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            command = new MySqlCommand("SELECT аттестация.дата_аттестации FROM пользователи INNER JOIN аттестация ON аттестация.`зачетная/табельный` = пользователи.`зачетная/табельный` INNER JOIN группаистудент ON группаистудент.`зачетная/табельный` = пользователи.`зачетная/табельный` WHERE группаистудент.группа_id = @gid AND аттестация.дисциплина_план_id = @dpid AND аттестация.семестр = @s AND пользователи.статус_пользователя='студент' GROUP BY аттестация.дата_аттестации", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             string dateString = "-";
             while (reader.Read())
             {
-                dateString = Convert.ToDateTime(reader["dateofexam"]).ToString("dd/MM/yyyy");
+                dateString = Convert.ToDateTime(reader["дата_аттестации"]).ToString("dd/MM/yyyy");
             }
             db.closeConnection();
             s.TypeText("Дата и время выдачи ведомости: " + dateString + " г\n");
             s.TypeText("Дата и время возвращения ведомости: " + dateString + " г\n");
             s.TypeText("Начальник учебного отдела ________________");
-            command = new MySqlCommand("SELECT secondname, firstname, thirdname FROM directorofstudies", db.getConnection());
+            command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество FROM пользователи WHERE статус_пользователя = 'уч.часть'", db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                s.TypeText("(" + reader.GetString("secondname") + " " + reader.GetString("firstname").Substring(0, 1) + "." + reader.GetString("thirdname").Substring(0, 1) + ")\n");
+                s.TypeText("(" + reader.GetString("фамилия") + " " + reader.GetString("имя").Substring(0, 1) + "." + reader.GetString("отчество").Substring(0, 1) + ")\n");
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT exams.TypeOfExam, exams.TypeOfMark, exams.Mark FROM exams LEFT JOIN groups ON groups.group_id = exams.group_id LEFT " +
-                "JOIN disciplines ON disciplines.discipline_id = exams.discipline_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            command = new MySqlCommand("SELECT аттестация.форма_контроля, аттестация.оценка_за_аттестацию FROM аттестация WHERE аттестация.дисциплина_план_id = @dpid AND аттестация.семестр = @s", db.getConnection());
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             int countMarks0 = 0;
@@ -299,7 +286,7 @@ namespace FinalWork_Demin
             int countMarksBad = 0;
             while (reader.Read())
             {
-                switch (reader.GetString("Mark"))
+                switch (reader.GetString("оценка_за_аттестацию"))
                 {
                     case "н/я":
                         countMarks0++;
@@ -327,16 +314,14 @@ namespace FinalWork_Demin
                 }
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT exams.TypeOfExam, exams.TypeOfMark FROM exams INNER JOIN groups ON groups.group_id = exams.group_id " +
-                "INNER JOIN disciplines ON disciplines.discipline_id = exams.discipline_id WHERE groups.nameofgroup = @nog AND " +
-                "disciplines.nameofdiscipline = @nod GROUP BY exams.TypeOfExam, exams.TypeOfMark", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            command = new MySqlCommand("SELECT аттестация.форма_контроля FROM аттестация WHERE аттестация.дисциплина_план_id = @dpid AND аттестация.семестр = @s GROUP BY форма_контроля", db.getConnection());
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                if ((reader.GetString("TypeOfMark") == "оценка" && reader.GetString("TypeOfExam") == "Зачет") || reader.GetString("TypeOfExam") == "Экзамен")
+                if (reader.GetString("форма_контроля") == "зачет с оценкой" || reader.GetString("форма_контроля") == "экзамен")
                 {
                     if(countMarks5 != 0)
                         s.TypeText("Отлично " + countMarks5.ToString() + "\n");
@@ -379,21 +364,19 @@ namespace FinalWork_Demin
             }
             db.closeConnection();
 
-            command = new MySqlCommand("SELECT lecturers.secondname, lecturers.firstname, lecturers.thirdname FROM exams INNER JOIN groups ON groups.group_id = exams.group_id INNER JOIN disciplines ON disciplines.discipline_id = exams.discipline_id INNER JOIN lecturers ON lecturers.lecturer_id = exams.lecturer_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod GROUP BY lecturers.lecturer_id", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество FROM пользователи INNER JOIN преподавательидисциплина ON преподавательидисциплина.`зачетная/табельный`=пользователи.`зачетная/табельный` WHERE преподавательидисциплина.дисциплина_план_id = @dpid AND пользователи.статус_пользователя ='преподаватель'", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                s.TypeText("Подпись преподавателя _____________" + reader.GetString("secondname") + " " + reader.GetString("firstname").Substring(0, 1) + "." + reader.GetString("thirdname").Substring(0, 1) + ".");
+                s.TypeText("Подпись преподавателя _____________" + reader.GetString("фамилия") + " " + reader.GetString("имя").Substring(0, 1) + "." + reader.GetString("отчество").Substring(0, 1) + ".");
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT students.firstname, students.secondname, students.thirdname, students.numberofzachetki, exams.Mark, exams.dateofexam, exams.examticket " +
-                "FROM students INNER JOIN exams ON exams.student_id = students.student_id INNER JOIN groups ON groups.group_id = exams.group_id INNER JOIN disciplines " +
-                "ON disciplines.discipline_id = exams.discipline_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod ORDER BY students.secondname ASC", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupPrintComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinePrintcomboBox.Text;
+            command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный`, аттестация.оценка_за_аттестацию, аттестация.дата_аттестации, аттестация.номер_билета FROM пользователи INNER JOIN аттестация ON аттестация.`зачетная/табельный` = пользователи.`зачетная/табельный` INNER JOIN группаистудент ON группаистудент.`зачетная/табельный` = пользователи.`зачетная/табельный` WHERE группаистудент.группа_id = @gid AND аттестация.дисциплина_план_id = @dpid AND аттестация.семестр = @s AND пользователи.статус_пользователя='студент' ORDER BY пользователи.фамилия ASC", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplinePrintidcomboBox.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrprintcomboBox.Text;
             db.openConnection();
             System.Data.DataTable table = new System.Data.DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
@@ -426,12 +409,12 @@ namespace FinalWork_Demin
             while (reader.Read())
             {
                 t.Cell(i, 1).Range.Text = count.ToString() + ".";
-                t.Cell(i, 2).Range.Text = reader.GetString("secondname") + " " + reader.GetString("firstname").Substring(0, 1) + "." + reader.GetString("thirdname").Substring(0, 1) + ".";
-                t.Cell(i, 3).Range.Text = reader.GetString("numberofzachetki");
-                t.Cell(i, 4).Range.Text = reader.GetString("Mark");
-                t.Cell(i, 5).Range.Text = reader.GetString("examticket");
-                t.Cell(i, 6).Range.Text = Convert.ToDateTime(reader["dateofexam"]).ToString("dd/MM/yyyy");
-                t.Cell(i, 7).Range.Text = "ПОДПИСЬ";
+                t.Cell(i, 2).Range.Text = reader.GetString("фамилия") + " " + reader.GetString("имя").Substring(0, 1) + "." + reader.GetString("отчество").Substring(0, 1) + ".";
+                t.Cell(i, 3).Range.Text = reader.GetString("зачетная/табельный");
+                t.Cell(i, 4).Range.Text = reader.GetString("оценка_за_аттестацию");
+                t.Cell(i, 5).Range.Text = reader.GetString("номер_билета");
+                t.Cell(i, 6).Range.Text = Convert.ToDateTime(reader["дата_аттестации"]).ToString("dd/MM/yyyy");
+                t.Cell(i, 7).Range.Text = "";
                 i++;
                 count++;
             }

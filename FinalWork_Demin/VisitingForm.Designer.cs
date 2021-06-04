@@ -222,7 +222,7 @@ namespace FinalWork_Demin
             // 
             this.AllLessonsofGrouptextBox.Enabled = false;
             this.AllLessonsofGrouptextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.AllLessonsofGrouptextBox.Location = new System.Drawing.Point(852, 163);
+            this.AllLessonsofGrouptextBox.Location = new System.Drawing.Point(840, 165);
             this.AllLessonsofGrouptextBox.Name = "AllLessonsofGrouptextBox";
             this.AllLessonsofGrouptextBox.Size = new System.Drawing.Size(57, 24);
             this.AllLessonsofGrouptextBox.TabIndex = 43;
@@ -232,7 +232,7 @@ namespace FinalWork_Demin
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(820, 163);
+            this.label1.Location = new System.Drawing.Point(808, 164);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 25);
             this.label1.TabIndex = 42;
@@ -242,7 +242,7 @@ namespace FinalWork_Demin
             // 
             this.MissesofGrouptextBox.Enabled = false;
             this.MissesofGrouptextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F);
-            this.MissesofGrouptextBox.Location = new System.Drawing.Point(757, 164);
+            this.MissesofGrouptextBox.Location = new System.Drawing.Point(757, 165);
             this.MissesofGrouptextBox.Name = "MissesofGrouptextBox";
             this.MissesofGrouptextBox.Size = new System.Drawing.Size(57, 24);
             this.MissesofGrouptextBox.TabIndex = 40;
