@@ -30,8 +30,10 @@ namespace FinalWork_Demin
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CourseWorksForm));
-            this.InsertDataButton = new System.Windows.Forms.Button();
             this.LoginAndPasswordPanel = new System.Windows.Forms.Panel();
+            this.DisciplineidcomboBox1 = new System.Windows.Forms.ComboBox();
+            this.StudentidcomboBox = new System.Windows.Forms.ComboBox();
+            this.GroupidcomboBox = new System.Windows.Forms.ComboBox();
             this.DisciplinecomboBox2 = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.Printbutton = new System.Windows.Forms.Button();
@@ -46,14 +48,6 @@ namespace FinalWork_Demin
             this.Grouplabel2 = new System.Windows.Forms.Label();
             this.StudentcomboBox = new System.Windows.Forms.ComboBox();
             this.Studentlabel = new System.Windows.Forms.Label();
-            this.SemestrComboBox1 = new System.Windows.Forms.ComboBox();
-            this.Semestrlabel1 = new System.Windows.Forms.Label();
-            this.GroupcomboBox1 = new System.Windows.Forms.ComboBox();
-            this.Grouplabel1 = new System.Windows.Forms.Label();
-            this.DateOfCoursedateTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.DateOfCourselabel = new System.Windows.Forms.Label();
-            this.DisciplinecomboBox1 = new System.Windows.Forms.ComboBox();
-            this.LessonLabel = new System.Windows.Forms.Label();
             this.authorizationPanel = new System.Windows.Forms.Panel();
             this.NavigationLabel = new System.Windows.Forms.Label();
             this.SetUpLabel = new System.Windows.Forms.Label();
@@ -61,24 +55,12 @@ namespace FinalWork_Demin
             this.authorizationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // InsertDataButton
-            // 
-            this.InsertDataButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
-            this.InsertDataButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.InsertDataButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.InsertDataButton.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InsertDataButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.InsertDataButton.Location = new System.Drawing.Point(12, 213);
-            this.InsertDataButton.Name = "InsertDataButton";
-            this.InsertDataButton.Size = new System.Drawing.Size(314, 45);
-            this.InsertDataButton.TabIndex = 23;
-            this.InsertDataButton.Text = "Записать/Обновить";
-            this.InsertDataButton.UseVisualStyleBackColor = false;
-            this.InsertDataButton.Click += new System.EventHandler(this.InsertDataButton_Click);
-            // 
             // LoginAndPasswordPanel
             // 
             this.LoginAndPasswordPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
+            this.LoginAndPasswordPanel.Controls.Add(this.DisciplineidcomboBox1);
+            this.LoginAndPasswordPanel.Controls.Add(this.StudentidcomboBox);
+            this.LoginAndPasswordPanel.Controls.Add(this.GroupidcomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.DisciplinecomboBox2);
             this.LoginAndPasswordPanel.Controls.Add(this.label1);
             this.LoginAndPasswordPanel.Controls.Add(this.Printbutton);
@@ -93,15 +75,6 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.Controls.Add(this.Grouplabel2);
             this.LoginAndPasswordPanel.Controls.Add(this.StudentcomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.Studentlabel);
-            this.LoginAndPasswordPanel.Controls.Add(this.SemestrComboBox1);
-            this.LoginAndPasswordPanel.Controls.Add(this.Semestrlabel1);
-            this.LoginAndPasswordPanel.Controls.Add(this.InsertDataButton);
-            this.LoginAndPasswordPanel.Controls.Add(this.GroupcomboBox1);
-            this.LoginAndPasswordPanel.Controls.Add(this.Grouplabel1);
-            this.LoginAndPasswordPanel.Controls.Add(this.DateOfCoursedateTimePicker);
-            this.LoginAndPasswordPanel.Controls.Add(this.DateOfCourselabel);
-            this.LoginAndPasswordPanel.Controls.Add(this.DisciplinecomboBox1);
-            this.LoginAndPasswordPanel.Controls.Add(this.LessonLabel);
             this.LoginAndPasswordPanel.Controls.Add(this.authorizationPanel);
             this.LoginAndPasswordPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.LoginAndPasswordPanel.Location = new System.Drawing.Point(0, 0);
@@ -109,13 +82,43 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.Size = new System.Drawing.Size(1006, 585);
             this.LoginAndPasswordPanel.TabIndex = 3;
             // 
+            // DisciplineidcomboBox1
+            // 
+            this.DisciplineidcomboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DisciplineidcomboBox1.Enabled = false;
+            this.DisciplineidcomboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.DisciplineidcomboBox1.Location = new System.Drawing.Point(702, 202);
+            this.DisciplineidcomboBox1.Name = "DisciplineidcomboBox1";
+            this.DisciplineidcomboBox1.Size = new System.Drawing.Size(143, 39);
+            this.DisciplineidcomboBox1.TabIndex = 89;
+            // 
+            // StudentidcomboBox
+            // 
+            this.StudentidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.StudentidcomboBox.Enabled = false;
+            this.StudentidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.StudentidcomboBox.Location = new System.Drawing.Point(851, 157);
+            this.StudentidcomboBox.Name = "StudentidcomboBox";
+            this.StudentidcomboBox.Size = new System.Drawing.Size(143, 39);
+            this.StudentidcomboBox.TabIndex = 88;
+            // 
+            // GroupidcomboBox
+            // 
+            this.GroupidcomboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.GroupidcomboBox.Enabled = false;
+            this.GroupidcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.GroupidcomboBox.Location = new System.Drawing.Point(332, 67);
+            this.GroupidcomboBox.Name = "GroupidcomboBox";
+            this.GroupidcomboBox.Size = new System.Drawing.Size(67, 39);
+            this.GroupidcomboBox.TabIndex = 87;
+            // 
             // DisciplinecomboBox2
             // 
             this.DisciplinecomboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DisciplinecomboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.DisciplinecomboBox2.Location = new System.Drawing.Point(195, 378);
+            this.DisciplinecomboBox2.Location = new System.Drawing.Point(195, 202);
             this.DisciplinecomboBox2.Name = "DisciplinecomboBox2";
-            this.DisciplinecomboBox2.Size = new System.Drawing.Size(204, 39);
+            this.DisciplinecomboBox2.Size = new System.Drawing.Size(501, 39);
             this.DisciplinecomboBox2.TabIndex = 48;
             this.DisciplinecomboBox2.SelectedIndexChanged += new System.EventHandler(this.DisciplinecomboBox2_SelectedIndexChanged);
             // 
@@ -124,7 +127,7 @@ namespace FinalWork_Demin
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label1.Location = new System.Drawing.Point(12, 378);
+            this.label1.Location = new System.Drawing.Point(12, 202);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(177, 39);
             this.label1.TabIndex = 47;
@@ -138,11 +141,11 @@ namespace FinalWork_Demin
             this.Printbutton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Printbutton.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Printbutton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Printbutton.Location = new System.Drawing.Point(870, 519);
+            this.Printbutton.Location = new System.Drawing.Point(195, 336);
             this.Printbutton.Name = "Printbutton";
-            this.Printbutton.Size = new System.Drawing.Size(124, 45);
+            this.Printbutton.Size = new System.Drawing.Size(431, 45);
             this.Printbutton.TabIndex = 45;
-            this.Printbutton.Text = "Печать";
+            this.Printbutton.Text = "Сформировать ведомость";
             this.Printbutton.UseVisualStyleBackColor = false;
             this.Printbutton.Click += new System.EventHandler(this.Printbutton_Click);
             // 
@@ -151,7 +154,7 @@ namespace FinalWork_Demin
             this.Themelabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Themelabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Themelabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Themelabel.Location = new System.Drawing.Point(12, 468);
+            this.Themelabel.Location = new System.Drawing.Point(12, 292);
             this.Themelabel.Name = "Themelabel";
             this.Themelabel.Size = new System.Drawing.Size(177, 38);
             this.Themelabel.TabIndex = 44;
@@ -161,7 +164,7 @@ namespace FinalWork_Demin
             // ThemetextBox
             // 
             this.ThemetextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.ThemetextBox.Location = new System.Drawing.Point(195, 468);
+            this.ThemetextBox.Location = new System.Drawing.Point(195, 292);
             this.ThemetextBox.Name = "ThemetextBox";
             this.ThemetextBox.Size = new System.Drawing.Size(650, 38);
             this.ThemetextBox.TabIndex = 43;
@@ -177,9 +180,9 @@ namespace FinalWork_Demin
             "Неудовлетворительно",
             "н/я",
             "-"});
-            this.MarkcomboBox.Location = new System.Drawing.Point(522, 378);
+            this.MarkcomboBox.Location = new System.Drawing.Point(195, 247);
             this.MarkcomboBox.Name = "MarkcomboBox";
-            this.MarkcomboBox.Size = new System.Drawing.Size(172, 39);
+            this.MarkcomboBox.Size = new System.Drawing.Size(204, 39);
             this.MarkcomboBox.TabIndex = 42;
             // 
             // Marklabel
@@ -187,9 +190,9 @@ namespace FinalWork_Demin
             this.Marklabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Marklabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Marklabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Marklabel.Location = new System.Drawing.Point(405, 378);
+            this.Marklabel.Location = new System.Drawing.Point(12, 247);
             this.Marklabel.Name = "Marklabel";
-            this.Marklabel.Size = new System.Drawing.Size(111, 39);
+            this.Marklabel.Size = new System.Drawing.Size(177, 39);
             this.Marklabel.TabIndex = 41;
             this.Marklabel.Text = "Оценка";
             this.Marklabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -198,9 +201,9 @@ namespace FinalWork_Demin
             // 
             this.SemestrComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SemestrComboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.SemestrComboBox2.Location = new System.Drawing.Point(463, 333);
+            this.SemestrComboBox2.Location = new System.Drawing.Point(143, 112);
             this.SemestrComboBox2.Name = "SemestrComboBox2";
-            this.SemestrComboBox2.Size = new System.Drawing.Size(55, 39);
+            this.SemestrComboBox2.Size = new System.Drawing.Size(63, 39);
             this.SemestrComboBox2.TabIndex = 40;
             this.SemestrComboBox2.SelectedIndexChanged += new System.EventHandler(this.SemestrComboBox2_SelectedIndexChanged);
             // 
@@ -209,7 +212,7 @@ namespace FinalWork_Demin
             this.Semestrlabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Semestrlabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Semestrlabel2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Semestrlabel2.Location = new System.Drawing.Point(332, 333);
+            this.Semestrlabel2.Location = new System.Drawing.Point(12, 112);
             this.Semestrlabel2.Name = "Semestrlabel2";
             this.Semestrlabel2.Size = new System.Drawing.Size(125, 39);
             this.Semestrlabel2.TabIndex = 39;
@@ -223,11 +226,11 @@ namespace FinalWork_Demin
             this.InsertMarksButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.InsertMarksButton.Font = new System.Drawing.Font("Century Gothic", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.InsertMarksButton.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.InsertMarksButton.Location = new System.Drawing.Point(12, 519);
+            this.InsertMarksButton.Location = new System.Drawing.Point(10, 336);
             this.InsertMarksButton.Name = "InsertMarksButton";
-            this.InsertMarksButton.Size = new System.Drawing.Size(331, 45);
+            this.InsertMarksButton.Size = new System.Drawing.Size(179, 45);
             this.InsertMarksButton.TabIndex = 38;
-            this.InsertMarksButton.Text = "Записать/Обновить";
+            this.InsertMarksButton.Text = "Записать";
             this.InsertMarksButton.UseVisualStyleBackColor = false;
             this.InsertMarksButton.Click += new System.EventHandler(this.InsertMarksButton_Click);
             // 
@@ -235,7 +238,7 @@ namespace FinalWork_Demin
             // 
             this.GroupcomboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GroupcomboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.GroupcomboBox2.Location = new System.Drawing.Point(122, 333);
+            this.GroupcomboBox2.Location = new System.Drawing.Point(122, 67);
             this.GroupcomboBox2.Name = "GroupcomboBox2";
             this.GroupcomboBox2.Size = new System.Drawing.Size(204, 39);
             this.GroupcomboBox2.TabIndex = 37;
@@ -246,7 +249,7 @@ namespace FinalWork_Demin
             this.Grouplabel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Grouplabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Grouplabel2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Grouplabel2.Location = new System.Drawing.Point(12, 333);
+            this.Grouplabel2.Location = new System.Drawing.Point(12, 67);
             this.Grouplabel2.Name = "Grouplabel2";
             this.Grouplabel2.Size = new System.Drawing.Size(104, 39);
             this.Grouplabel2.TabIndex = 36;
@@ -258,7 +261,7 @@ namespace FinalWork_Demin
             this.StudentcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.StudentcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.StudentcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.StudentcomboBox.Location = new System.Drawing.Point(195, 423);
+            this.StudentcomboBox.Location = new System.Drawing.Point(195, 157);
             this.StudentcomboBox.Name = "StudentcomboBox";
             this.StudentcomboBox.Size = new System.Drawing.Size(650, 39);
             this.StudentcomboBox.TabIndex = 35;
@@ -269,102 +272,12 @@ namespace FinalWork_Demin
             this.Studentlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Studentlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Studentlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Studentlabel.Location = new System.Drawing.Point(12, 423);
+            this.Studentlabel.Location = new System.Drawing.Point(12, 157);
             this.Studentlabel.Name = "Studentlabel";
             this.Studentlabel.Size = new System.Drawing.Size(177, 39);
             this.Studentlabel.TabIndex = 34;
             this.Studentlabel.Text = "Студент";
             this.Studentlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // SemestrComboBox1
-            // 
-            this.SemestrComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SemestrComboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.SemestrComboBox1.Location = new System.Drawing.Point(463, 79);
-            this.SemestrComboBox1.Name = "SemestrComboBox1";
-            this.SemestrComboBox1.Size = new System.Drawing.Size(71, 39);
-            this.SemestrComboBox1.TabIndex = 33;
-            this.SemestrComboBox1.SelectedIndexChanged += new System.EventHandler(this.SemestrComboBox1_SelectedIndexChanged);
-            // 
-            // Semestrlabel1
-            // 
-            this.Semestrlabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.Semestrlabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.Semestrlabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Semestrlabel1.Location = new System.Drawing.Point(332, 79);
-            this.Semestrlabel1.Name = "Semestrlabel1";
-            this.Semestrlabel1.Size = new System.Drawing.Size(125, 39);
-            this.Semestrlabel1.TabIndex = 32;
-            this.Semestrlabel1.Text = "Семестр";
-            this.Semestrlabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // GroupcomboBox1
-            // 
-            this.GroupcomboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.GroupcomboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.GroupcomboBox1.Location = new System.Drawing.Point(122, 79);
-            this.GroupcomboBox1.Name = "GroupcomboBox1";
-            this.GroupcomboBox1.Size = new System.Drawing.Size(204, 39);
-            this.GroupcomboBox1.TabIndex = 21;
-            this.GroupcomboBox1.SelectedIndexChanged += new System.EventHandler(this.GroupcomboBox1_SelectedIndexChanged);
-            // 
-            // Grouplabel1
-            // 
-            this.Grouplabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.Grouplabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.Grouplabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Grouplabel1.Location = new System.Drawing.Point(12, 79);
-            this.Grouplabel1.Name = "Grouplabel1";
-            this.Grouplabel1.Size = new System.Drawing.Size(106, 39);
-            this.Grouplabel1.TabIndex = 20;
-            this.Grouplabel1.Text = "Группа";
-            this.Grouplabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DateOfCoursedateTimePicker
-            // 
-            this.DateOfCoursedateTimePicker.CalendarFont = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.DateOfCoursedateTimePicker.CustomFormat = "dd-MM-yyyy";
-            this.DateOfCoursedateTimePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.DateOfCoursedateTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.DateOfCoursedateTimePicker.Location = new System.Drawing.Point(211, 169);
-            this.DateOfCoursedateTimePicker.Name = "DateOfCoursedateTimePicker";
-            this.DateOfCoursedateTimePicker.Size = new System.Drawing.Size(323, 38);
-            this.DateOfCoursedateTimePicker.TabIndex = 18;
-            this.DateOfCoursedateTimePicker.Value = new System.DateTime(2021, 6, 1, 17, 23, 0, 0);
-            // 
-            // DateOfCourselabel
-            // 
-            this.DateOfCourselabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.DateOfCourselabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.DateOfCourselabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.DateOfCourselabel.Location = new System.Drawing.Point(12, 169);
-            this.DateOfCourselabel.Name = "DateOfCourselabel";
-            this.DateOfCourselabel.Size = new System.Drawing.Size(195, 38);
-            this.DateOfCourselabel.TabIndex = 15;
-            this.DateOfCourselabel.Text = "Дата защиты";
-            this.DateOfCourselabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // DisciplinecomboBox1
-            // 
-            this.DisciplinecomboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.DisciplinecomboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.DisciplinecomboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.DisciplinecomboBox1.Location = new System.Drawing.Point(211, 124);
-            this.DisciplinecomboBox1.Name = "DisciplinecomboBox1";
-            this.DisciplinecomboBox1.Size = new System.Drawing.Size(323, 39);
-            this.DisciplinecomboBox1.TabIndex = 11;
-            // 
-            // LessonLabel
-            // 
-            this.LessonLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.LessonLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.LessonLabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.LessonLabel.Location = new System.Drawing.Point(12, 124);
-            this.LessonLabel.Name = "LessonLabel";
-            this.LessonLabel.Size = new System.Drawing.Size(195, 39);
-            this.LessonLabel.TabIndex = 10;
-            this.LessonLabel.Text = "Дисциплина";
-            this.LessonLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // authorizationPanel
             // 
@@ -424,17 +337,7 @@ namespace FinalWork_Demin
         }
 
         #endregion
-
-        private System.Windows.Forms.Button InsertDataButton;
         private System.Windows.Forms.Panel LoginAndPasswordPanel;
-        private System.Windows.Forms.ComboBox SemestrComboBox1;
-        private System.Windows.Forms.Label Semestrlabel1;
-        private System.Windows.Forms.ComboBox GroupcomboBox1;
-        private System.Windows.Forms.Label Grouplabel1;
-        private System.Windows.Forms.DateTimePicker DateOfCoursedateTimePicker;
-        private System.Windows.Forms.Label DateOfCourselabel;
-        private System.Windows.Forms.ComboBox DisciplinecomboBox1;
-        private System.Windows.Forms.Label LessonLabel;
         private System.Windows.Forms.Panel authorizationPanel;
         private System.Windows.Forms.Label SetUpLabel;
         private System.Windows.Forms.ComboBox SemestrComboBox2;
@@ -452,5 +355,8 @@ namespace FinalWork_Demin
         private System.Windows.Forms.Label NavigationLabel;
         private System.Windows.Forms.ComboBox DisciplinecomboBox2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox GroupidcomboBox;
+        private System.Windows.Forms.ComboBox StudentidcomboBox;
+        private System.Windows.Forms.ComboBox DisciplineidcomboBox1;
     }
 }

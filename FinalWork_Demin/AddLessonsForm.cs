@@ -27,6 +27,12 @@ namespace FinalWork_Demin
             LecturerscomboBox.Items.Clear();
             DisciplineidcomboBox.Items.Clear();
             LectureridcomboBox.Items.Clear();
+            IndexcomboBox1.Items.Clear();
+            IndexidcomboBox1.Items.Clear();
+            IndexcomboBox2.Items.Clear();
+            IndexidcomboBox2.Items.Clear();
+            LecturerscomboBox.Items.Clear();
+            LectureridcomboBox.Items.Clear();
             if (DataCheck.TypeOfUser != "Админ")
             {
                 NavigationLabel.Enabled = false;
@@ -38,60 +44,169 @@ namespace FinalWork_Demin
                 NavigationLabel.Visible = true;
             }
             DayofweekcomboBox.SelectedIndex = 0;
-            TypeOfMarkcomboBox.SelectedIndex = 0;
-            SemestrComboBox.SelectedIndex = 0;
+            FormcomboBox.SelectedIndex = 0;
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM groups", db.getConnection());
+            MySqlCommand command = new MySqlCommand("SELECT * FROM `группы`", db.getConnection());
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                GroupcomboBox.Items.Add(reader.GetString("nameofgroup") + "/" + reader.GetString("group_id"));
+                GroupcomboBox.Items.Add(reader.GetString("имя_группы"));
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT * FROM disciplines", db.getConnection());
+            command = new MySqlCommand("SELECT * FROM `дисциплины`", db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                DisciplineComboBox.Items.Add(reader.GetString("nameofdiscipline") + "/" + reader.GetString("discipline_id"));
-                DisciplinescomboBox.Items.Add(reader.GetString("nameofdiscipline"));
-                DisciplineidcomboBox.Items.Add(reader.GetString("discipline_id"));
+                DisciplineComboBox.Items.Add(reader.GetString("наименование"));
             }
             db.closeConnection();
-            GroupcomboBox.SelectedIndex = 0;
-            command = new MySqlCommand("SELECT * FROM lecturers", db.getConnection());
+            command = new MySqlCommand("SELECT индекс, наименование, дисциплина_план_id FROM `учебныйплан` INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id", db.getConnection());
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                LecturerscomboBox.Items.Add(reader.GetString("secondname") + " " + reader.GetString("firstname") + " " + reader.GetString("thirdname"));
-                LectureridcomboBox.Items.Add(reader.GetString("lecturer_id"));
+                IndexcomboBox1.Items.Add(reader.GetString("индекс"));
+                IndexidcomboBox1.Items.Add(reader.GetString("дисциплина_план_id"));
+                IndexcomboBox2.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                IndexidcomboBox2.Items.Add(reader.GetString("дисциплина_план_id"));
+                DisciplinescomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
             }
             db.closeConnection();
-            GroupcomboBox.SelectedIndex = 0;
+            command = new MySqlCommand("SELECT * from `пользователи` WHERE статус_пользователя = 'Преподаватель'", db.getConnection());
+            db.openConnection();
+            reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                LecturerscomboBox.Items.Add(reader.GetString("фамилия")+" "+ reader.GetString("имя") + " "+ reader.GetString("отчество"));
+                LectureridcomboBox.Items.Add(reader.GetString("зачетная/табельный"));
+            }
+            db.closeConnection();
             WeeknumcomboBox.SelectedIndex = 0;
             TypeoflectioncomboBox.SelectedIndex = 0;
             TimeoflectioncomboBox.SelectedIndex = 0;
+            SemestrcomboBox.SelectedIndex = 0;
         }
-        private void ExamcheckBox_CheckedChanged(object sender, EventArgs e)
+        private void IndexcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ExamcheckBox.Checked == true)
+            IndexidcomboBox1.SelectedIndex = IndexcomboBox1.SelectedIndex;
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT `учебныйплан`.`дисциплина_план_id`,`группы`.`имя_группы`, `группы`.`группа_id`, `дисциплины`.`наименование` FROM `учебныйплан` INNER JOIN `группы` ON `группы`.`группа_id`=`учебныйплан`.`группа_id` INNER JOIN `дисциплины` ON `дисциплины`.`дисциплина_id`=`учебныйплан`.`дисциплина_id`  WHERE `учебныйплан`.`дисциплина_план_id` = @dpid", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = IndexidcomboBox1.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                ExamCreditlabel.Text = "Дата Экзамена";
-                TypeOfMarkLabel.Visible = false;
-                TypeOfMarkcomboBox.Visible = false;
+                TypeDatacheckBox1.Checked = true;
+                TypeDatacheckBox1.Enabled = true;
+                Deletebutton1.Visible = true;
+                InsertUpddatebutton1.Text = "Обновить";
+                CheckBoxTextlabel1.Text = "В базе данных как " + reader.GetString("дисциплина_план_id");
+                int index = GroupcomboBox.Items.IndexOf(reader.GetString("имя_группы"));
+                GroupcomboBox.SelectedIndex = index;
+                index = DisciplineComboBox.Items.IndexOf(reader.GetString("наименование"));
+                DisciplineComboBox.SelectedIndex = index;
             }
-            if (ExamcheckBox.Checked == false)
+            db.closeConnection();
+        }
+        private void InsertUpddatebutton1_Click(object sender, EventArgs e)
+        {
+            if (InsertUpddatebutton1.Text == "Записать")
             {
-                ExamCreditlabel.Text = "Дата Зачета";
-                TypeOfMarkLabel.Visible = true;
-                TypeOfMarkcomboBox.Visible = true;
+                int iddiscipline = 0;
+                int idgroup = 0;
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT `группа_id` FROM `группы` WHERE `имя_группы` = @nog;", db.getConnection());
+                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    idgroup = reader.GetInt16("группа_id");
+                }
+                db.closeConnection();
+                command = new MySqlCommand("SELECT `дисциплина_id` FROM `дисциплины` WHERE `наименование` = @nod", db.getConnection());
+                command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplineComboBox.Text;
+                db.openConnection();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    iddiscipline = reader.GetInt16("дисциплина_id");
+                }
+                db.closeConnection();
+                command = new MySqlCommand("INSERT INTO `учебныйплан` (`дисциплина_план_id`, `группа_id`, `индекс`, `дисциплина_id`) VALUES (NULL, @gid, @ind, @did);", db.getConnection());
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = idgroup;
+                command.Parameters.Add("@ind", MySqlDbType.VarChar).Value = IndexcomboBox1.Text;
+                command.Parameters.Add("@did", MySqlDbType.VarChar).Value = iddiscipline;
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();// Закрывать из-за нагрузки на базу данных
+                LoadDataIntoAddLessonsForm();
+            }
+            else
+            {
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT `группа_id` FROM `группы` WHERE `имя_группы` = @nog;", db.getConnection());
+                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                int idgroup = 0;
+                while (reader.Read())
+                {
+                    idgroup = reader.GetInt32("группа_id");
+                }
+                db.closeConnection();
+                command = new MySqlCommand("SELECT `дисциплина_id` FROM `дисциплины` WHERE `наименование` = @nod;", db.getConnection());
+                command.Parameters.Add("@d", MySqlDbType.VarChar).Value = DisciplineComboBox.Text;
+                db.openConnection();
+                reader = command.ExecuteReader();
+                int iddiscipline = 0;
+                while (reader.Read())
+                {
+                    iddiscipline = reader.GetInt32("дисциплина_id");
+                }
+                db.closeConnection();
+                command = new MySqlCommand("UPDATE `учебныйплан` SET `группа_id` = @gid, `индекс` = @ind, `дисциплина_id` = @did WHERE `специальность_id` = @sid", db.getConnection());
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = idgroup;
+                command.Parameters.Add("@ind", MySqlDbType.VarChar).Value = IndexcomboBox1.Text;
+                command.Parameters.Add("@did", MySqlDbType.VarChar).Value = iddiscipline;
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();// Закрывать из-за нагрузки на базу данных
+                LoadDataIntoAddLessonsForm();
             }
         }
-
-        
-
+        private void Deletebutton1_Click(object sender, EventArgs e)
+        {
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("DELETE FROM `учебныйплан` WHERE `дисциплина_план_id` = @dpid", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = IndexidcomboBox1.Text;
+            db.openConnection();
+            command.ExecuteNonQuery();
+            db.closeConnection();// Закрывать из-за нагрузки на базу данных
+            LoadDataIntoAddLessonsForm();
+            Deletebutton1.Visible = true;
+            IndexcomboBox1.Text = "";
+            TypeDatacheckBox1.Checked = false;
+            TypeDatacheckBox1.Enabled = false;
+            LoadDataIntoAddLessonsForm();
+        }
+        private void TypeDatacheckBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (TypeDatacheckBox1.Checked == false)
+            {
+                TypeDatacheckBox1.Enabled = false;
+                Deletebutton1.Visible = false;
+                InsertUpddatebutton1.Text = "Записать";
+                CheckBoxTextlabel1.Text = "Нет в базе";
+            }
+        }
+        private void IndexcomboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            IndexidcomboBox2.SelectedIndex = IndexcomboBox2.SelectedIndex;
+        }
         private void AddLessonsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Environment.Exit(0);
@@ -103,169 +218,51 @@ namespace FinalWork_Demin
             NavigationForm navigationform = new NavigationForm();
             navigationform.Show();
         }
-
-        private void LecturerscomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void OpenLectionslabel_Click(object sender, EventArgs e)
         {
-            DisciplineslistBox.Items.Clear();
-            string[] FIO = LecturerscomboBox.Text.Split(' ');
-            LectureridcomboBox.SelectedIndex = LecturerscomboBox.SelectedIndex;
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM lecturers WHERE secondname = @sn AND firstname = @fn AND thirdname = @tn AND lecturer_id = @lid", db.getConnection());
-            command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = FIO[1];
-            command.Parameters.Add("@sn", MySqlDbType.VarChar).Value = FIO[0];
-            command.Parameters.Add("@tn", MySqlDbType.VarChar).Value = FIO[2];
-            command.Parameters.Add("@lid", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
-            db.openConnection();
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                PositiontextBox.Text = reader.GetString("position");
-            }
-            db.closeConnection();
-            command = new MySqlCommand("SELECT disciplines.nameofdiscipline, lecturersanddisciplines.main FROM disciplines INNER JOIN lecturersanddisciplines ON lecturersanddisciplines.discipline_id = disciplines.discipline_id INNER JOIN lecturers ON lecturers.lecturer_id = lecturersanddisciplines.lecturer_id WHERE lecturers.lecturer_id = @lid", db.getConnection());
-            command.Parameters.Add("@lid", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
-            db.openConnection();
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                int main = reader.GetInt16("main");
-                if (main == 1)
-                    DisciplineslistBox.Items.Add(reader.GetString("nameofdiscipline") + "/ОСНОВНОЙ");
-                else
-                    DisciplineslistBox.Items.Add(reader.GetString("nameofdiscipline"));
-            }
-            db.closeConnection();
+            ListOfLessonsForm listoflessons = new ListOfLessonsForm();
+            listoflessons.Show();
         }
 
-        private void DisciplinescomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void Numoflectionlabel_Click(object sender, EventArgs e)
         {
-            DisciplineidcomboBox.SelectedIndex = DisciplinescomboBox.SelectedIndex;
-            TypeDatacheckBox.Checked = true;
-            TypeDatacheckBox.Enabled = true;
-            Deletebutton.Visible = true;
-            InsertUpdatebutton.Text = "Обновить";
-            CheckBoxTextlabel.Text = "Cуществует в базе данных как " + DisciplineidcomboBox.Text;
+
         }
 
-        private void TypeDatacheckBox_CheckedChanged(object sender, EventArgs e)
+        private void CourseWorkcheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (TypeDatacheckBox.Checked == false)
+            if (CourseWorkcheckBox.Checked == true)
             {
-                TypeDatacheckBox.Enabled = false;
-                Deletebutton.Visible = false;
-                InsertUpdatebutton.Text = "Записать";
-                CheckBoxTextlabel.Text = "Не существует в базе данных";
-                DisciplineslistBox.Items.Clear();
+                Courseworklabel.Enabled = true;
+                Courseworklabel.Visible = true;
+                CourseworkdateTimePicker.Enabled = true;
+                CourseworkdateTimePicker.Visible = true;
+            }
+            else 
+            {
+                Courseworklabel.Enabled = false;
+                Courseworklabel.Visible = false;
+                CourseworkdateTimePicker.Enabled = false;
+                CourseworkdateTimePicker.Visible = false;
             }
         }
 
-        private void InsertUpdatebutton_Click(object sender, EventArgs e)
-        {
-            if (InsertUpdatebutton.Text == "Записать")
-            {
-                DB db = new DB();
-                MySqlCommand command = new MySqlCommand("SELECT * FROM disciplines WHERE nameofdiscipline = @nod", db.getConnection());
-                command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinescomboBox.Text;
-                MySqlDataAdapter adapter = new MySqlDataAdapter();
-                System.Data.DataTable table = new System.Data.DataTable();
-                adapter.SelectCommand = command;
-                adapter.Fill(table);
-                int id = 0;
-                /*MySqlCommand command = new MySqlCommand("INSERT INTO disciplines(discipline_id, nameofdiscipline) VALUES(NULL, @nod);" +
-                                      "INSERT INTO lecturersanddisciplines (lecturer_id, discipline_id, main, numofrelation) VALUES(@lid, @did, @m, NULL); ", db.getConnection());*/
-                command.Parameters.Clear();
-                if (table.Rows.Count > 0)
-                {
-                    command = new MySqlCommand("INSERT INTO lecturersanddisciplines (lecturer_id, discipline_id, main, numofrelation) VALUES(@lid, @did, @m, NULL);", db.getConnection());
-                    command.Parameters.Add("@lid", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
-                    command.Parameters.Add("@did", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
-                    if (MaincheckBox.Checked == true)
-                        command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 1;
-                    if (MaincheckBox.Checked == false)
-                        command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 0;
-                    db.openConnection();
-                    command.ExecuteNonQuery();
-                    db.closeConnection();// Закрывать из-за нагрузки на базу данных
-                    LoadDataIntoAddLessonsForm();
-                }
-                else 
-                {
-                    command = new MySqlCommand("INSERT INTO disciplines(discipline_id, nameofdiscipline) VALUES(NULL, @nod);", db.getConnection());
-                    command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinescomboBox.Text;
-                    db.openConnection();
-                    command.ExecuteNonQuery();
-                    db.closeConnection();// Закрывать из-за нагрузки на базу данных
-                    command = new MySqlCommand("SELECT * FROM disciplines WHERE nameofdiscipline = @nod", db.getConnection());
-                    command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinescomboBox.Text;
-                    db.openConnection();
-                    MySqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        id = reader.GetInt16("discipline_id");
-                    }
-                    db.closeConnection();
-                    command = new MySqlCommand("INSERT INTO lecturersanddisciplines (lecturer_id, discipline_id, main, numofrelation) VALUES(@lid, @did, @m, NULL);", db.getConnection());
-                    command.Parameters.Add("@lid", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
-                    command.Parameters.Add("@did", MySqlDbType.VarChar).Value = id;
-                    if(MaincheckBox.Checked == true)
-                        command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 1;
-                    if (MaincheckBox.Checked == false)
-                        command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 0;
-                    db.openConnection();
-                    command.ExecuteNonQuery();
-                    db.closeConnection();// Закрывать из-за нагрузки на базу данных
-                }
-                
-            }
-            else
-            {
-                DB db = new DB();
-                MySqlCommand command = new MySqlCommand("UPDATE disciplines SET nameofdiscipline = @nod WHERE discipline_id = @did; " +
-                    "UPDATE lecturersanddisciplines SET lecturer_id = @lid, main = @m WHERE discipline_id = @did;", db.getConnection());
-                command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinescomboBox.Text;
-                command.Parameters.Add("@did", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
-                command.Parameters.Add("@lid", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
-                if (MaincheckBox.Checked == true)
-                    command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 1;
-                else
-                    command.Parameters.Add("@m", MySqlDbType.VarChar).Value = 0;
-                db.openConnection();
-                command.ExecuteNonQuery();
-                db.closeConnection();// Закрывать из-за нагрузки на базу данных
-            }
-        }
-        private void Deletebutton_Click(object sender, EventArgs e)
-        {
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("DELETE FROM `lecturersanddisciplines` WHERE `lecturersanddisciplines`.`discipline_id` = @did;DELETE FROM `disciplines` WHERE `disciplines`.`discipline_id` = @did;", db.getConnection());
-            command.Parameters.Add("@did", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
-            db.openConnection();
-            command.ExecuteNonQuery();
-            db.closeConnection();// Закрывать из-за нагрузки на базу данных
-            LoadDataIntoAddLessonsForm();
-        }
         private void InsertDataButton_Click(object sender, EventArgs e)
         {
-            string[] GroupString = GroupcomboBox.Text.Split('/');
-            string[] DisciplineString = DisciplineComboBox.Text.Split('/');
             DB db = new DB();
-            DataTable table = new DataTable();
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM lecturersanddisciplines INNER JOIN disciplines ON disciplines.discipline_id = lecturersanddisciplines.discipline_id WHERE main = 1 AND disciplines.nameofdiscipline = @nod", db.getConnection());
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplineString[0];
+            MySqlCommand command = new MySqlCommand("SELECT группа_id FROM `учебныйплан` WHERE дисциплина_план_id = @dpid", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = IndexidcomboBox2.Text;
             db.openConnection();
-            adapter.SelectCommand = command;
-            adapter.Fill(table);
-            if (table.Rows.Count == 0)
+            MySqlDataReader reader = command.ExecuteReader();
+            int idgroup = 0;
+            while (reader.Read())
             {
-                MessageBox.Show("У преподавателя нету предмета");
-                return;
+                idgroup = reader.GetInt16("группа_id");
             }
             db.closeConnection();
-            command = new MySqlCommand("SET lc_time_names = 'ru_RU'; call pr1(@ds, @de, @sd, @gid, @did, @s,@toe,@tom,@doe,@tow,@typeofl,@timeofl); SET lc_time_names = 'en_US';", db.getConnection());
+            command = new MySqlCommand("SET lc_time_names = 'ru_RU'; call pr1(@ds, @de, @sd, @gid, @dpid, @s,@tow,@typeofl,@timeofl,@toa, @doa, @cw, @doc); SET lc_time_names = 'en_US';", db.getConnection());
             command.Parameters.AddWithValue("@ds", Convert.ToDateTime(DateofStartdateTimePicker.Value));
             command.Parameters.AddWithValue("@de", Convert.ToDateTime(DateOfEnddateTimePicker.Value));
-            command.Parameters.AddWithValue("@tow", Convert.ToString(WeeknumcomboBox.Text));
             switch (DayofweekcomboBox.Text)
             {
                 case "пн":
@@ -293,30 +290,80 @@ namespace FinalWork_Demin
                     Console.WriteLine("unkonwn");
                     break;
             }
-            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupString[1];
-            command.Parameters.Add("@did", MySqlDbType.VarChar).Value = DisciplineString[1];
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
-            if (ExamcheckBox.Checked == true)
-            {
-                command.Parameters.Add("@toe", MySqlDbType.VarChar).Value = "Экзамен";
-                command.Parameters.Add("@tom", MySqlDbType.VarChar).Value = "оценка";
-            }
-            else
-            {
-                command.Parameters.Add("@toe", MySqlDbType.VarChar).Value = "Зачет";
-                command.Parameters.Add("@tom", MySqlDbType.VarChar).Value = TypeOfMarkcomboBox.Text;
-            }
-            command.Parameters.AddWithValue("@doe", Convert.ToDateTime(ExamCreditTimePicker.Value));
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = idgroup;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = IndexidcomboBox2.Text;
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
+            command.Parameters.AddWithValue("@tow", Convert.ToString(WeeknumcomboBox.Text));
             command.Parameters.Add("@typeofl", MySqlDbType.VarChar).Value = TypeoflectioncomboBox.Text;
             command.Parameters.Add("@timeofl", MySqlDbType.VarChar).Value = TimeoflectioncomboBox.Text;
+            command.Parameters.Add("@toa", MySqlDbType.VarChar).Value = FormcomboBox.Text;
+            command.Parameters.AddWithValue("@doa", Convert.ToDateTime(ExamCreditTimePicker.Value));
+            if(CourseWorkcheckBox.Checked == true)
+                command.Parameters.Add("@cw", MySqlDbType.VarChar).Value = 1;
+            else
+                command.Parameters.Add("@cw", MySqlDbType.VarChar).Value = 0;
+            command.Parameters.AddWithValue("@doc", Convert.ToDateTime(CourseworkdateTimePicker.Value));
             db.openConnection();
             command.ExecuteNonQuery();
             db.closeConnection();// Закрывать из-за нагрузки на базу данных
         }
-        private void OpenLectionslabel_Click(object sender, EventArgs e)
+        private void DisciplinescomboBox_SelectedIndexChanged_1(object sender, EventArgs e)
         {
-            ListOfLessonsForm listoflessons = new ListOfLessonsForm();
-            listoflessons.Show();
+            DisciplineidcomboBox.SelectedIndex = DisciplinescomboBox.SelectedIndex;
+        }
+
+        private void LecturerscomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LectureridcomboBox.SelectedIndex = LecturerscomboBox.SelectedIndex;
+        }
+
+        private void InsertUpdatebutton_Click(object sender, EventArgs e)
+        {
+            DisciplineslistBox.Items.Clear();
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("INSERT INTO преподавательидисциплина( `зачетная/табельный`, дисциплина_план_id ) VALUES( @zt, @dpid );", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
+            db.openConnection();
+            command.ExecuteNonQuery();
+            db.closeConnection();// Закрывать из-за нагрузки на базу данных
+            command = new MySqlCommand("SELECT дисциплины.наименование, учебныйплан.индекс, преподавательидисциплина.дисциплина_план_id FROM `преподавательидисциплина` INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = преподавательидисциплина.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id WHERE преподавательидисциплина.`зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                DisciplineslistBox.Items.Add(reader.GetString("наименование") + "/" + reader.GetString("индекс") + "/" + reader.GetString("дисциплина_план_id"));
+            }
+            db.closeConnection();
+        }
+
+        private void LectureridcomboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DisciplineslistBox.Items.Clear();
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, учебныйплан.индекс, преподавательидисциплина.дисциплина_план_id FROM `преподавательидисциплина` INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = преподавательидисциплина.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id WHERE преподавательидисциплина.`зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                DisciplineslistBox.Items.Add(reader.GetString("наименование") + "/" + reader.GetString("индекс") + "/" + reader.GetString("дисциплина_план_id"));
+            }
+            db.closeConnection();
+        }
+
+        private void Deletebutton_Click(object sender, EventArgs e)
+        {
+            string[] DisciplineslistString = DisciplineslistBox.Text.Split('/');
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("DELETE FROM преподавательидисциплина WHERE дисциплина_план_id = @dpid AND `зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = LectureridcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineslistString[2];
+            db.openConnection();
+            command.ExecuteNonQuery();
+            db.closeConnection();// Закрывать из-за нагрузки на базу данных
+            DisciplineslistBox.Items.RemoveAt(DisciplineslistBox.SelectedIndex);
         }
     }
  }

@@ -134,7 +134,7 @@ namespace FinalWork_Demin
             this.GroupcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.GroupcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.GroupcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.GroupcomboBox.Location = new System.Drawing.Point(180, 247);
+            this.GroupcomboBox.Location = new System.Drawing.Point(331, 291);
             this.GroupcomboBox.Name = "GroupcomboBox";
             this.GroupcomboBox.Size = new System.Drawing.Size(177, 39);
             this.GroupcomboBox.TabIndex = 65;
@@ -145,22 +145,20 @@ namespace FinalWork_Demin
             this.Ticketlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Ticketlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Ticketlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Ticketlabel.Location = new System.Drawing.Point(363, 247);
+            this.Ticketlabel.Location = new System.Drawing.Point(12, 247);
             this.Ticketlabel.Name = "Ticketlabel";
-            this.Ticketlabel.Size = new System.Drawing.Size(473, 38);
+            this.Ticketlabel.Size = new System.Drawing.Size(313, 38);
             this.Ticketlabel.TabIndex = 30;
-            this.Ticketlabel.Text = "№ студенческого билета/Табельный";
+            this.Ticketlabel.Text = "№ зачетки/Табельный";
             this.Ticketlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.Ticketlabel.Visible = false;
             // 
             // TabelnytextBox
             // 
             this.TabelnytextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.TabelnytextBox.Location = new System.Drawing.Point(842, 248);
+            this.TabelnytextBox.Location = new System.Drawing.Point(331, 247);
             this.TabelnytextBox.Name = "TabelnytextBox";
             this.TabelnytextBox.Size = new System.Drawing.Size(276, 38);
             this.TabelnytextBox.TabIndex = 27;
-            this.TabelnytextBox.Visible = false;
             // 
             // FemaleradioButton
             // 
@@ -214,7 +212,7 @@ namespace FinalWork_Demin
             // 
             // TypeofJob
             // 
-            this.TypeofJob.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
+            this.TypeofJob.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.TypeofJob.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.TypeofJob.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.TypeofJob.Location = new System.Drawing.Point(12, 114);
@@ -222,16 +220,16 @@ namespace FinalWork_Demin
             this.TypeofJob.Size = new System.Drawing.Size(162, 39);
             this.TypeofJob.TabIndex = 22;
             this.TypeofJob.Text = "Статус";
-            this.TypeofJob.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.TypeofJob.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // Grouplabel
             // 
             this.Grouplabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Grouplabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.Grouplabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Grouplabel.Location = new System.Drawing.Point(12, 247);
+            this.Grouplabel.Location = new System.Drawing.Point(12, 291);
             this.Grouplabel.Name = "Grouplabel";
-            this.Grouplabel.Size = new System.Drawing.Size(162, 39);
+            this.Grouplabel.Size = new System.Drawing.Size(313, 39);
             this.Grouplabel.TabIndex = 20;
             this.Grouplabel.Text = "Группа";
             this.Grouplabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;

@@ -31,6 +31,7 @@ namespace FinalWork_Demin
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddNewData));
             this.LoginAndPasswordPanel = new System.Windows.Forms.Panel();
+            this.yearofnumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.NavigationLabel = new System.Windows.Forms.Label();
             this.TypeDatacheckBox4 = new System.Windows.Forms.CheckBox();
             this.CheckBoxTextlabel4 = new System.Windows.Forms.Label();
@@ -39,8 +40,7 @@ namespace FinalWork_Demin
             this.Disciplineslabel = new System.Windows.Forms.Label();
             this.DisciplinescomboBox = new System.Windows.Forms.ComboBox();
             this.Specialtylabel2 = new System.Windows.Forms.Label();
-            this.CoursecomboBox1 = new System.Windows.Forms.ComboBox();
-            this.Courselabel1 = new System.Windows.Forms.Label();
+            this.yearlabel = new System.Windows.Forms.Label();
             this.TypeDatacheckBox3 = new System.Windows.Forms.CheckBox();
             this.CheckBoxTextlabel3 = new System.Windows.Forms.Label();
             this.Deletebutton3 = new System.Windows.Forms.Button();
@@ -64,13 +64,19 @@ namespace FinalWork_Demin
             this.Specialtylabel1 = new System.Windows.Forms.Label();
             this.authorizationPanel = new System.Windows.Forms.Panel();
             this.SetUpLabel = new System.Windows.Forms.Label();
+            this.Formlabel = new System.Windows.Forms.Label();
+            this.FormcomboBox = new System.Windows.Forms.ComboBox();
             this.LoginAndPasswordPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yearofnumericUpDown)).BeginInit();
             this.authorizationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // LoginAndPasswordPanel
             // 
             this.LoginAndPasswordPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
+            this.LoginAndPasswordPanel.Controls.Add(this.Formlabel);
+            this.LoginAndPasswordPanel.Controls.Add(this.FormcomboBox);
+            this.LoginAndPasswordPanel.Controls.Add(this.yearofnumericUpDown);
             this.LoginAndPasswordPanel.Controls.Add(this.NavigationLabel);
             this.LoginAndPasswordPanel.Controls.Add(this.TypeDatacheckBox4);
             this.LoginAndPasswordPanel.Controls.Add(this.CheckBoxTextlabel4);
@@ -79,8 +85,7 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.Controls.Add(this.Disciplineslabel);
             this.LoginAndPasswordPanel.Controls.Add(this.DisciplinescomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.Specialtylabel2);
-            this.LoginAndPasswordPanel.Controls.Add(this.CoursecomboBox1);
-            this.LoginAndPasswordPanel.Controls.Add(this.Courselabel1);
+            this.LoginAndPasswordPanel.Controls.Add(this.yearlabel);
             this.LoginAndPasswordPanel.Controls.Add(this.TypeDatacheckBox3);
             this.LoginAndPasswordPanel.Controls.Add(this.CheckBoxTextlabel3);
             this.LoginAndPasswordPanel.Controls.Add(this.Deletebutton3);
@@ -108,6 +113,29 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.Name = "LoginAndPasswordPanel";
             this.LoginAndPasswordPanel.Size = new System.Drawing.Size(1062, 587);
             this.LoginAndPasswordPanel.TabIndex = 3;
+            // 
+            // yearofnumericUpDown
+            // 
+            this.yearofnumericUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.yearofnumericUpDown.Location = new System.Drawing.Point(923, 296);
+            this.yearofnumericUpDown.Maximum = new decimal(new int[] {
+            9999,
+            0,
+            0,
+            0});
+            this.yearofnumericUpDown.Minimum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
+            this.yearofnumericUpDown.Name = "yearofnumericUpDown";
+            this.yearofnumericUpDown.Size = new System.Drawing.Size(120, 31);
+            this.yearofnumericUpDown.TabIndex = 81;
+            this.yearofnumericUpDown.Value = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             // 
             // NavigationLabel
             // 
@@ -213,33 +241,17 @@ namespace FinalWork_Demin
             this.Specialtylabel2.Text = "Специальность";
             this.Specialtylabel2.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
-            // CoursecomboBox1
+            // yearlabel
             // 
-            this.CoursecomboBox1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.CoursecomboBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.CoursecomboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CoursecomboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
-            this.CoursecomboBox1.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4"});
-            this.CoursecomboBox1.Location = new System.Drawing.Point(612, 295);
-            this.CoursecomboBox1.Name = "CoursecomboBox1";
-            this.CoursecomboBox1.Size = new System.Drawing.Size(69, 33);
-            this.CoursecomboBox1.TabIndex = 73;
-            // 
-            // Courselabel1
-            // 
-            this.Courselabel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.Courselabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
-            this.Courselabel1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Courselabel1.Location = new System.Drawing.Point(538, 295);
-            this.Courselabel1.Name = "Courselabel1";
-            this.Courselabel1.Size = new System.Drawing.Size(68, 33);
-            this.Courselabel1.TabIndex = 72;
-            this.Courselabel1.Text = "Курс";
-            this.Courselabel1.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.yearlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.yearlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.yearlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.yearlabel.Location = new System.Drawing.Point(732, 295);
+            this.yearlabel.Name = "yearlabel";
+            this.yearlabel.Size = new System.Drawing.Size(187, 33);
+            this.yearlabel.TabIndex = 72;
+            this.yearlabel.Text = "Год поступления";
+            this.yearlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // TypeDatacheckBox3
             // 
@@ -325,7 +337,7 @@ namespace FinalWork_Demin
             this.GroupcomboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
             this.GroupcomboBox1.Location = new System.Drawing.Point(221, 295);
             this.GroupcomboBox1.Name = "GroupcomboBox1";
-            this.GroupcomboBox1.Size = new System.Drawing.Size(311, 33);
+            this.GroupcomboBox1.Size = new System.Drawing.Size(150, 33);
             this.GroupcomboBox1.TabIndex = 64;
             this.GroupcomboBox1.SelectedIndexChanged += new System.EventHandler(this.GroupcomboBox1_SelectedIndexChanged);
             this.GroupcomboBox1.TextChanged += new System.EventHandler(this.GroupcomboBox1_TextChanged);
@@ -532,6 +544,31 @@ namespace FinalWork_Demin
             this.SetUpLabel.Text = "Добавление начальных данных";
             this.SetUpLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
+            // Formlabel
+            // 
+            this.Formlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.Formlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.Formlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Formlabel.Location = new System.Drawing.Point(377, 295);
+            this.Formlabel.Name = "Formlabel";
+            this.Formlabel.Size = new System.Drawing.Size(84, 33);
+            this.Formlabel.TabIndex = 83;
+            this.Formlabel.Text = "Форма обучения";
+            this.Formlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            // 
+            // FormcomboBox
+            // 
+            this.FormcomboBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.FormcomboBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.FormcomboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
+            this.FormcomboBox.Items.AddRange(new object[] {
+            "Очная",
+            "Очно-заочная"});
+            this.FormcomboBox.Location = new System.Drawing.Point(467, 296);
+            this.FormcomboBox.Name = "FormcomboBox";
+            this.FormcomboBox.Size = new System.Drawing.Size(259, 33);
+            this.FormcomboBox.TabIndex = 82;
+            // 
             // AddNewData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -544,6 +581,7 @@ namespace FinalWork_Demin
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AddNewData_FormClosed);
             this.LoginAndPasswordPanel.ResumeLayout(false);
             this.LoginAndPasswordPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.yearofnumericUpDown)).EndInit();
             this.authorizationPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -568,8 +606,7 @@ namespace FinalWork_Demin
         private System.Windows.Forms.ComboBox DirectioncomboBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label Specialtylabel2;
-        private System.Windows.Forms.ComboBox CoursecomboBox1;
-        private System.Windows.Forms.Label Courselabel1;
+        private System.Windows.Forms.Label yearlabel;
         private System.Windows.Forms.CheckBox TypeDatacheckBox3;
         private System.Windows.Forms.Label CheckBoxTextlabel3;
         private System.Windows.Forms.Button Deletebutton3;
@@ -584,5 +621,8 @@ namespace FinalWork_Demin
         private System.Windows.Forms.Button InsertUpddatebutton4;
         private System.Windows.Forms.Label Disciplineslabel;
         private System.Windows.Forms.ComboBox DisciplinescomboBox;
+        private System.Windows.Forms.NumericUpDown yearofnumericUpDown;
+        private System.Windows.Forms.Label Formlabel;
+        private System.Windows.Forms.ComboBox FormcomboBox;
     }
 }

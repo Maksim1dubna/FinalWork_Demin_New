@@ -33,9 +33,10 @@ namespace FinalWork_Demin
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             if(StudentradioButton.Checked == true)
             {
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `students` WHERE `Login` = @uL AND `Password` = @uP", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
                 command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
+                command.Parameters.Add("@tou", MySqlDbType.VarChar).Value = StudentradioButton.Text;
                 db.openConnection();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
@@ -53,9 +54,10 @@ namespace FinalWork_Demin
             }
             if (LecturerradioButton.Checked == true)
             {
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `lecturers` WHERE `Login` = @uL AND `Password` = @uP", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
                 command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
+                command.Parameters.Add("@tou", MySqlDbType.VarChar).Value = LecturerradioButton.Text;
                 db.openConnection();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
@@ -73,9 +75,10 @@ namespace FinalWork_Demin
             }
             if (AdminradioButton.Checked == true)
             {
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `admins` WHERE `login` = @uL AND `password` = @uP", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
                 command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
+                command.Parameters.Add("@tou", MySqlDbType.VarChar).Value = AdminradioButton.Text;
                 db.openConnection();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
@@ -93,9 +96,10 @@ namespace FinalWork_Demin
             }
             if (DirectorradioButton.Checked == true)
             {
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `directorofstudies` WHERE `login` = @uL AND `password` = @uP", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
                 command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
+                command.Parameters.Add("@tou", MySqlDbType.VarChar).Value = DirectorradioButton.Text;
                 db.openConnection();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);

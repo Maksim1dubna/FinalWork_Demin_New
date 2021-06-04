@@ -45,12 +45,12 @@ namespace FinalWork_Demin
             }    
             GroupcomboBox.Items.Clear();
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT * FROM groups", db.getConnection());
+            MySqlCommand command = new MySqlCommand("SELECT * FROM группы", db.getConnection());
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                GroupcomboBox.Items.Add(reader.GetString("nameofgroup"));
+                GroupcomboBox.Items.Add(reader.GetString("имя_группы"));
             }
         }
         private void RegistationLoginField_Enter(object sender, EventArgs e)
@@ -105,7 +105,6 @@ namespace FinalWork_Demin
 
         private void buttonRegistation_Click(object sender, EventArgs e)
         {
-            
             if (RegistationLoginField.Text == "Введите имя пользователя")
             {
                 MessageBox.Show("Введите имя пользователя");
@@ -126,43 +125,53 @@ namespace FinalWork_Demin
             if (TypeofJobcomboBox.Text == "Студент")
             {
                 DB db = new DB();
-                MySqlCommand command = new MySqlCommand("SELECT group_id FROM groups WHERE nameofgroup = @nog", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT `группа_id` FROM `группы` WHERE `имя_группы` = @nog", db.getConnection());
                 command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
                 db.openConnection();
                 MySqlDataReader reader = command.ExecuteReader();
-                int id = 0;
+                int idgroup = 0;
                 while (reader.Read())
                 {
-                    id = reader.GetInt32("group_id");
+                    idgroup = reader.GetInt32("группа_id");
                 }
                 db.closeConnection();
-                command = new MySqlCommand("INSERT INTO `students` (`student_id`, `group_id`, `secondname`, `firstname`, `thirdname`, `gender`, `dateofborn`, `numberofticket`, " +
-                    "`numberofzachetki`, `login`, `password`) VALUES (NULL, @gid, @sn, @fn, @tn, @gen, @d, @not, @noz, @uL, @p);select @@IDENTITY AS id;", db.getConnection());
+                command = new MySqlCommand("INSERT INTO `пользователи`( `зачетная/табельный`, `статус_пользователя`, `фамилия`, `имя`, `отчество`, `пол`, `дата_рождения` ) VALUES( @nt, @stat, @sn, @fn, @tn, @g, @dob );", db.getConnection());
                 string[] FIO = FIOtextBox.Text.Split(' ');
-                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = id;
+                command.Parameters.Add("@nt", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
+                command.Parameters.Add("@stat", MySqlDbType.VarChar).Value = TypeofJobcomboBox.Text;
                 command.Parameters.Add("@sn", MySqlDbType.VarChar).Value = FIO[0];
                 command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = FIO[1];
                 command.Parameters.Add("@tn", MySqlDbType.VarChar).Value = FIO[2];
                 if (MaleradioButton.Checked == true)
-                    command.Parameters.Add("@gen", MySqlDbType.VarChar).Value = MaleradioButton.Text;
+                    command.Parameters.Add("@g", MySqlDbType.VarChar).Value = MaleradioButton.Text;
                 if (FemaleradioButton.Checked == true)
-                    command.Parameters.Add("@gen", MySqlDbType.VarChar).Value = FemaleradioButton.Text;
-                command.Parameters.Add("@d", MySqlDbType.Date).Value = DateOfBorndateTimePicker.Value;
-                command.Parameters.Add("@not", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
-                command.Parameters.Add("@noz", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
-                command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
-                command.Parameters.Add("@p", MySqlDbType.VarChar).Value = RegistationPassField.Text;
+                    command.Parameters.Add("@g", MySqlDbType.VarChar).Value = FemaleradioButton.Text;
+                command.Parameters.Add("@dob", MySqlDbType.Date).Value = DateOfBorndateTimePicker.Value;
                 db.openConnection();
                 reader = command.ExecuteReader();
-                id = 0;
+                int iduser = 0;
                 while (reader.Read())
                 {
-                    id = reader.GetInt16("id");
+                    iduser = reader.GetInt16("id");
                 }
+                MessageBox.Show(iduser.ToString());
+                db.closeConnection();
+                command = new MySqlCommand("INSERT INTO `авторизация`(`зачетная/табельный`, `логин`, `пароль`) VALUES( @nt, @l, @p);", db.getConnection());
+                command.Parameters.Add("@nt", MySqlDbType.VarChar).Value = TabelnytextBox.Text; ;
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
+                command.Parameters.Add("@p", MySqlDbType.VarChar).Value = RegistationPassField.Text;
+                db.openConnection();
+                command.ExecuteNonQuery();
+                db.closeConnection();
+                command = new MySqlCommand("INSERT INTO `группаистудент`(`группа_id`, `зачетная/табельный`) VALUES( @gid, @nt);", db.getConnection());
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = idgroup;
+                command.Parameters.Add("@nt", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
+                db.openConnection();
+                command.ExecuteNonQuery();
                 db.closeConnection();
                 //MessageBox.Show(id.ToString());
-                command = new MySqlCommand("SELECT MAX(student_id) as student_id, visits.group_id FROM visits INNER JOIN groups ON groups.group_id = visits.group_id WHERE " +
-                    "groups.nameofgroup = @nog GROUP BY group_id; ", db.getConnection());
+                /*command = new MySqlCommand("SELECT MAX(пользователь_id`) as пользователь_id, visits.group_id FROM visits INNER JOIN groups ON groups.group_id = visits.group_id WHERE " +
+                    "groups.`имя_группы` = @nog GROUP BY group_id; ", db.getConnection());
                 command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
                 db.openConnection();
                 reader = command.ExecuteReader();
@@ -180,7 +189,7 @@ namespace FinalWork_Demin
                 db.openConnection();
                 command.ExecuteNonQuery();
                 db.closeConnection();
-                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM exams INNER JOIN groups ON groups.group_id = exams.group_id WHERE groups.nameofgroup = @nog", db.getConnection());
+                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM exams INNER JOIN groups ON groups.group_id = exams.group_id WHERE groups.`имя_группы` = @nog", db.getConnection());
                 command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
                 db.openConnection();
                 reader = command.ExecuteReader();
@@ -195,7 +204,7 @@ namespace FinalWork_Demin
                 db.openConnection();
                 command.ExecuteNonQuery();
                 db.closeConnection();
-                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM courseworksdata INNER JOIN groups ON groups.group_id = courseworksdata.group_id WHERE groups.nameofgroup = @nog", db.getConnection());
+                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM courseworksdata INNER JOIN groups ON groups.group_id = courseworksdata.group_id WHERE groups.`имя_группы` = @nog", db.getConnection());
                 command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
                 db.openConnection();
                 reader = command.ExecuteReader();
@@ -210,28 +219,38 @@ namespace FinalWork_Demin
                 command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
                 db.openConnection();
                 command.ExecuteNonQuery();
-                db.closeConnection();
+                db.closeConnection();*/
             }
             else
             {
                 DB db = new DB();
-                MySqlCommand command = new MySqlCommand("INSERT INTO `lecturers` (`lecturer_id`, `secondname`, `firstname`, `thirdname`, `position`, `gender`, `dateofborn`, `login`, `password`) VALUES (NULL, @sn, @fn, @tn, @pos, @gen, @d, @uL, @p)", db.getConnection());
+                MySqlCommand command = new MySqlCommand("INSERT INTO `пользователи`( `зачетная/табельный`, `статус_пользователя`, `фамилия`, `имя`, `отчество`, `пол`, `дата_рождения` ) VALUES( @nt, @stat, @sn, @fn, @tn, @g, @dob ); SELECT @@IDENTITY AS id;", db.getConnection());
                 string[] FIO = FIOtextBox.Text.Split(' ');
-
+                command.Parameters.Add("@nt", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
+                command.Parameters.Add("@stat", MySqlDbType.VarChar).Value = TypeofJobcomboBox.Text;
                 command.Parameters.Add("@sn", MySqlDbType.VarChar).Value = FIO[0];
                 command.Parameters.Add("@fn", MySqlDbType.VarChar).Value = FIO[1];
                 command.Parameters.Add("@tn", MySqlDbType.VarChar).Value = FIO[2];
-                command.Parameters.Add("@pos", MySqlDbType.VarChar).Value = TypeofJobcomboBox.Text;
                 if (MaleradioButton.Checked == true)
-                    command.Parameters.Add("@gen", MySqlDbType.VarChar).Value = MaleradioButton.Text;
+                    command.Parameters.Add("@g", MySqlDbType.VarChar).Value = MaleradioButton.Text;
                 if (FemaleradioButton.Checked == true)
-                    command.Parameters.Add("@gen", MySqlDbType.VarChar).Value = FemaleradioButton.Text;
-                command.Parameters.Add("@d", MySqlDbType.Date).Value = DateOfBorndateTimePicker.Value;
-                command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
+                    command.Parameters.Add("@g", MySqlDbType.VarChar).Value = FemaleradioButton.Text;
+                command.Parameters.Add("@dob", MySqlDbType.Date).Value = DateOfBorndateTimePicker.Value;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                int iduser = 0;
+                while (reader.Read())
+                {
+                    iduser = reader.GetInt16("id");
+                }
+                db.closeConnection();
+                command = new MySqlCommand("INSERT INTO `авторизация`(`зачетная/табельный`, `логин`, `пароль`) VALUES( @nt, @l, @p);", db.getConnection());
+                command.Parameters.Add("@nt", MySqlDbType.VarChar).Value = TabelnytextBox.Text;
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
                 command.Parameters.Add("@p", MySqlDbType.VarChar).Value = RegistationPassField.Text;
                 db.openConnection();
                 command.ExecuteNonQuery();
-                db.closeConnection();// Закрывать из-за нагрузки на базу данных
+                db.closeConnection();
             }
         }
 
@@ -240,24 +259,10 @@ namespace FinalWork_Demin
             DB db = new DB();
             DataTable table = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
-            if (TypeofJobcomboBox.Text == "Студент")
-            {
-                
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `students` WHERE `login` = @uL", db.getConnection());
-                command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
-
-                adapter.SelectCommand = command;
-                adapter.Fill(table);
-            }
-            else
-            {
-
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `lecturers` WHERE `Login` = @uL", db.getConnection());
-                command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
-
-                adapter.SelectCommand = command;
-                adapter.Fill(table);
-            }
+            MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN `пользователи` ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL", db.getConnection());
+            command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = RegistationLoginField.Text;
+            adapter.SelectCommand = command;
+            adapter.Fill(table);
             if (table.Rows.Count > 0)
                 {
                     MessageBox.Show("Такой логин уже есть, введите другой");
@@ -281,15 +286,11 @@ namespace FinalWork_Demin
             {
                 Grouplabel.Visible = true;
                 GroupcomboBox.Visible = true;
-                Ticketlabel.Visible = true;
-                TabelnytextBox.Visible = true;
             }
             else
             {
                 Grouplabel.Visible = false;
                 GroupcomboBox.Visible = false;
-                Ticketlabel.Visible = false;
-                TabelnytextBox.Visible = false;
             }
         }
 
@@ -299,15 +300,11 @@ namespace FinalWork_Demin
             {
                 Grouplabel.Visible = true;
                 GroupcomboBox.Visible = true;
-                Ticketlabel.Visible = true;
-                TabelnytextBox.Visible = true;
             }
             else
             {
                 Grouplabel.Visible = false;
                 GroupcomboBox.Visible = false;
-                Ticketlabel.Visible = false;
-                TabelnytextBox.Visible = false;
             }
         }
         private void RegistrationForm_FormClosed(object sender, FormClosedEventArgs e)
