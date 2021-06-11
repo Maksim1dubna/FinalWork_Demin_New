@@ -68,7 +68,7 @@ namespace FinalWork_Demin
             this.RegistationLabel.Name = "RegistationLabel";
             this.RegistationLabel.Size = new System.Drawing.Size(1320, 64);
             this.RegistationLabel.TabIndex = 0;
-            this.RegistationLabel.Text = "Регистрация (Бирюзовый)";
+            this.RegistationLabel.Text = "Регистрация";
             this.RegistationLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // LoginAndPasswordPanel

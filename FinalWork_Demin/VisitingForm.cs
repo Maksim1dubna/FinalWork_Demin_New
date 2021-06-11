@@ -16,7 +16,7 @@ namespace FinalWork_Demin
         private void CountMisses()
         {
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT COUNT(посещение) AS пропуски FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND посещения.посещение = 0 AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid", db.getConnection());
+            MySqlCommand command = new MySqlCommand("SELECT COUNT(посещение) AS пропуски FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND посещения.посещение = 0 AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid", db.getConnection());// в данном случае подсчитываются все пропуски на основе id группы, семестра и id дисциплины
             command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
             command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
@@ -24,10 +24,10 @@ namespace FinalWork_Demin
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                MissesofGrouptextBox.Text = reader.GetString("пропуски");
+                MissesofGrouptextBox.Text = reader.GetString("пропуски"); 
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT COUNT(посещение) AS все FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid", db.getConnection());
+            command = new MySqlCommand("SELECT COUNT(посещение) AS все FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid", db.getConnection());// в данном случае подсчитываются кол-во всех существующих занятий на основе id группы, семестра и id дисциплины
             command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
             command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
@@ -207,6 +207,7 @@ namespace FinalWork_Demin
             dataTable.Load(read);
             VisitsAndProgressDataGridView.DataSource = dataTable;
             db.closeConnection();
+            this.VisitsAndProgressDataGridView.Columns[5].Visible = false;
         }
 
         private void VisitsAndProgressDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)

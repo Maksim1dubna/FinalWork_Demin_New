@@ -169,57 +169,6 @@ namespace FinalWork_Demin
                 db.openConnection();
                 command.ExecuteNonQuery();
                 db.closeConnection();
-                //MessageBox.Show(id.ToString());
-                /*command = new MySqlCommand("SELECT MAX(пользователь_id`) as пользователь_id, visits.group_id FROM visits INNER JOIN groups ON groups.group_id = visits.group_id WHERE " +
-                    "groups.`имя_группы` = @nog GROUP BY group_id; ", db.getConnection());
-                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
-                db.openConnection();
-                reader = command.ExecuteReader();
-                int studentid = 0;
-                while (reader.Read())
-                {
-                    studentid = reader.GetInt32("student_id");
-                }
-                db.closeConnection();
-                //MessageBox.Show(id.ToString());
-                command = new MySqlCommand("INSERT INTO visits (student_id, group_id,discipline_id, visit, dateoflection) SELECT REPLACE(student_id, student_id, @id) AS " +
-                    "student_id,group_id,discipline_id,REPLACE(visit,1,0) AS visit,dateoflection FROM visits WHERE student_id = @sid ", db.getConnection());
-                command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = studentid;
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
-                db.openConnection();
-                command.ExecuteNonQuery();
-                db.closeConnection();
-                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM exams INNER JOIN groups ON groups.group_id = exams.group_id WHERE groups.`имя_группы` = @nog", db.getConnection());
-                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
-                db.openConnection();
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    studentid = reader.GetInt16("student_id");
-                }
-                db.closeConnection();
-                command = new MySqlCommand("INSERT INTO exams( discipline_id, group_id, student_id, lecturer_id, examticket, semestr, TypeOfExam, TypeOfMark, Mark, dateofexam, dayofweek) SELECT discipline_id, groups.group_id, REPLACE (student_id, student_id, @id) AS student_id, lecturer_id, REPLACE (examticket, examticket, '-') AS examticket, semestr, TypeOfExam, TypeOfMark, REPLACE (Mark, Mark, '-') AS Mark, dateofexam, DAYOFWEEK FROM exams INNER JOIN groups ON groups.group_id = exams.group_id WHERE exams.student_id = @sid", db.getConnection());
-                command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = studentid;
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
-                db.openConnection();
-                command.ExecuteNonQuery();
-                db.closeConnection();
-                command = new MySqlCommand("SELECT MAX(student_id) AS student_id FROM courseworksdata INNER JOIN groups ON groups.group_id = courseworksdata.group_id WHERE groups.`имя_группы` = @nog", db.getConnection());
-                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupcomboBox.Text;
-                db.openConnection();
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    studentid = reader.GetInt16("student_id");
-                }
-                db.closeConnection();
-                MessageBox.Show(id.ToString());
-                command = new MySqlCommand("INSERT INTO courseworksdata(coursework_id, discipline_id, group_id, student_id, semestr, Mark, theme) SELECT coursework_id, discipline_id, group_id, REPLACE (student_id, student_id, @id) AS student_id, semestr, REPLACE (Mark, Mark, '-') AS Mark, theme FROM courseworksdata WHERE courseworksdata.student_id = @sid", db.getConnection());
-                command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = studentid;
-                command.Parameters.Add("@id", MySqlDbType.VarChar).Value = id;
-                db.openConnection();
-                command.ExecuteNonQuery();
-                db.closeConnection();*/
             }
             else
             {

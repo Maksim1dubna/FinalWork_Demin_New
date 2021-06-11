@@ -49,9 +49,9 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel = new System.Windows.Forms.Panel();
             this.TypeofExamlabel1 = new System.Windows.Forms.Label();
             this.DisciplinePrintidcomboBox = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.Disciplineprintlabel = new System.Windows.Forms.Label();
             this.GroupPrintidcomboBox = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.Groupprintlabel = new System.Windows.Forms.Label();
             this.StudentcomboBox = new System.Windows.Forms.ComboBox();
             this.StudentidcomboBox = new System.Windows.Forms.ComboBox();
             this.DisciplineidcomboBox = new System.Windows.Forms.ComboBox();
@@ -247,9 +247,9 @@ namespace FinalWork_Demin
             this.LoginAndPasswordPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(36)))), ((int)(((byte)(95)))));
             this.LoginAndPasswordPanel.Controls.Add(this.TypeofExamlabel1);
             this.LoginAndPasswordPanel.Controls.Add(this.DisciplinePrintidcomboBox);
-            this.LoginAndPasswordPanel.Controls.Add(this.label7);
+            this.LoginAndPasswordPanel.Controls.Add(this.Disciplineprintlabel);
             this.LoginAndPasswordPanel.Controls.Add(this.GroupPrintidcomboBox);
-            this.LoginAndPasswordPanel.Controls.Add(this.label5);
+            this.LoginAndPasswordPanel.Controls.Add(this.Groupprintlabel);
             this.LoginAndPasswordPanel.Controls.Add(this.StudentcomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.StudentidcomboBox);
             this.LoginAndPasswordPanel.Controls.Add(this.DisciplineidcomboBox);
@@ -301,17 +301,17 @@ namespace FinalWork_Demin
             this.DisciplinePrintidcomboBox.Size = new System.Drawing.Size(143, 39);
             this.DisciplinePrintidcomboBox.TabIndex = 97;
             // 
-            // label7
+            // Disciplineprintlabel
             // 
-            this.label7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label7.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label7.Location = new System.Drawing.Point(5, 357);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(175, 39);
-            this.label7.TabIndex = 96;
-            this.label7.Text = "Дисциплина";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Disciplineprintlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.Disciplineprintlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.Disciplineprintlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Disciplineprintlabel.Location = new System.Drawing.Point(5, 357);
+            this.Disciplineprintlabel.Name = "Disciplineprintlabel";
+            this.Disciplineprintlabel.Size = new System.Drawing.Size(175, 39);
+            this.Disciplineprintlabel.TabIndex = 96;
+            this.Disciplineprintlabel.Text = "Дисциплина";
+            this.Disciplineprintlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // GroupPrintidcomboBox
             // 
@@ -323,17 +323,17 @@ namespace FinalWork_Demin
             this.GroupPrintidcomboBox.Size = new System.Drawing.Size(67, 39);
             this.GroupPrintidcomboBox.TabIndex = 95;
             // 
-            // label5
+            // Groupprintlabel
             // 
-            this.label5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
-            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.label5.Location = new System.Drawing.Point(5, 312);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(173, 39);
-            this.label5.TabIndex = 94;
-            this.label5.Text = "Группа";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.Groupprintlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
+            this.Groupprintlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
+            this.Groupprintlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.Groupprintlabel.Location = new System.Drawing.Point(5, 312);
+            this.Groupprintlabel.Name = "Groupprintlabel";
+            this.Groupprintlabel.Size = new System.Drawing.Size(173, 39);
+            this.Groupprintlabel.TabIndex = 94;
+            this.Groupprintlabel.Text = "Группа";
+            this.Groupprintlabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // StudentcomboBox
             // 
@@ -600,9 +600,9 @@ namespace FinalWork_Demin
         private System.Windows.Forms.ComboBox GroupidcomboBox;
         private System.Windows.Forms.ComboBox StudentcomboBox;
         private System.Windows.Forms.ComboBox DisciplinePrintidcomboBox;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label Disciplineprintlabel;
         private System.Windows.Forms.ComboBox GroupPrintidcomboBox;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label Groupprintlabel;
         private System.Windows.Forms.Label TypeofExamlabel1;
     }
 }

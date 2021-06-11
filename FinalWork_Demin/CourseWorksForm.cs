@@ -24,18 +24,7 @@ namespace FinalWork_Demin
             DB db = new DB();
             MySqlCommand command;
             MySqlDataReader reader;
-            if (DataCheck.TypeOfUser != "Админ" && DataCheck.TypeOfUser != "Уч.Часть" )
-            {
-                if(DataCheck.TypeOfUser != "Преподаватель")
-                {
-                    MarkcomboBox.Enabled = false;
-                    StudentcomboBox.Enabled = false;
-                    ThemetextBox.Enabled = false;
-                    Printbutton.Enabled = false;
-                    Printbutton.Visible = false;
-                }
-            }
-            else
+            if (DataCheck.TypeOfUser == "Админ" || DataCheck.TypeOfUser == "Уч.часть")
             {
                 command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE аттестация.курсовая_работа = 1 GROUP BY группы.группа_id", db.getConnection());
                 db.openConnection();
@@ -46,11 +35,48 @@ namespace FinalWork_Demin
                     GroupidcomboBox.Items.Add(reader.GetString("группа_id"));
                 }
                 db.closeConnection();
-
             }
             if (DataCheck.TypeOfUser == "Студент")
             {
-                command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN группаистудент ON группаистудент.группа_id = группы.группа_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = группаистудент.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE авторизация.логин = @l AND пользователи.статус_пользователя = 'Студент' AND аттестация.курсовая_работа = 1 GROUP BY группы.группа_id", db.getConnection());
+                MarkcomboBox.Enabled = false;
+                ThemetextBox.Enabled = false;
+                GroupcomboBox.Enabled = false;
+                StudentcomboBox.Enabled = false;
+                InsertMarksButton.Enabled = false;
+                InsertMarksButton.Visible = false;
+                Disciplinelabel.Visible = false;
+                DisciplineprintcomboBox.Enabled = false;
+                DisciplineprintcomboBox.Visible = false;
+                DisciplinePrintidcomboBox.Enabled = false;
+                DisciplinePrintidcomboBox.Visible = false;
+                Printbutton.Visible = false;
+                Printbutton.Enabled = false;
+                command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный` FROM `пользователи` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` WHERE авторизация.логин = @l AND пользователи.статус_пользователя = 'студент'", db.getConnection());
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
+                db.openConnection();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentcomboBox.Items.Add(reader.GetString("фамилия") + " " + reader.GetString("имя") + " " + reader.GetString("отчество"));
+                    StudentidcomboBox.Items.Add(reader.GetString("зачетная/табельный"));
+                }
+                db.closeConnection();
+                StudentcomboBox.SelectedIndex = 0;
+                command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = аттестация.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный`=пользователи.`зачетная/табельный` WHERE аттестация.курсовая_работа = 1 AND авторизация.логин = @l AND пользователи.статус_пользователя = 'Студент' GROUP BY группы.группа_id", db.getConnection());
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
+                db.openConnection();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    GroupcomboBox.Items.Add(reader.GetString("имя_группы"));
+                    GroupidcomboBox.Items.Add(reader.GetString("группа_id"));
+                }
+                db.closeConnection();
+                GroupcomboBox.SelectedIndex = 0;
+            }
+            if (DataCheck.TypeOfUser == "Преподаватель")
+            {
+                command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN преподавательидисциплина ON преподавательидисциплина.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE авторизация.логин = @l AND пользователи.статус_пользователя = 'Преподаватель' AND аттестация.курсовая_работа = 1 GROUP BY группы.группа_id", db.getConnection());
                 command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
                 db.openConnection();
                 reader = command.ExecuteReader();
@@ -64,61 +90,117 @@ namespace FinalWork_Demin
         }
         private void GroupcomboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            GroupidcomboBox.SelectedIndex = GroupcomboBox.SelectedIndex;
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT аттестация.семестр FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE аттестация.курсовая_работа = 1 AND группы.группа_id = @gid GROUP BY аттестация.семестр", db.getConnection());
-            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
-            db.openConnection();
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            if (DataCheck.TypeOfUser != "Преподаватель")
             {
-                SemestrComboBox.Items.Add(reader.GetString("семестр"));
+                GroupidcomboBox.SelectedIndex = GroupcomboBox.SelectedIndex;
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT аттестация.семестр FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE аттестация.курсовая_работа = 1 AND группы.группа_id = @gid GROUP BY аттестация.семестр", db.getConnection());
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    SemestrComboBox.Items.Add(reader.GetString("семестр"));
+                }
+                db.closeConnection();
             }
-            db.closeConnection();
+            else 
+            {
+                GroupidcomboBox.SelectedIndex = GroupcomboBox.SelectedIndex;
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT аттестация.семестр FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN преподавательидисциплина ON преподавательидисциплина.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` WHERE аттестация.курсовая_работа = 1 AND учебныйплан.группа_id = @gid AND пользователи.статус_пользователя = 'Преподаватель' AND авторизация.логин = @l GROUP BY аттестация.семестр", db.getConnection());
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    SemestrComboBox.Items.Add(reader.GetString("семестр"));
+                }
+                db.closeConnection();
+            }
         }
         private void SemestrComboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный` FROM `пользователи` INNER JOIN группаистудент ON группаистудент.`зачетная/табельный`=пользователи.`зачетная/табельный` INNER JOIN группы ON группы.группа_id = группаистудент.группа_id INNER JOIN аттестация ON аттестация.`зачетная/табельный`=пользователи.`зачетная/табельный` WHERE аттестация.семестр = @s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1", db.getConnection());
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
-            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
-            db.openConnection();
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            if (DataCheck.TypeOfUser != "Студент")
             {
-                StudentcomboBox.Items.Add(reader.GetString("фамилия") + " " + reader.GetString("имя") + " " + reader.GetString("отчество"));
-                StudentidcomboBox.Items.Add(reader.GetString("зачетная/табельный"));
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный` FROM `пользователи` INNER JOIN группаистудент ON группаистудент.`зачетная/табельный`=пользователи.`зачетная/табельный` INNER JOIN группы ON группы.группа_id = группаистудент.группа_id INNER JOIN аттестация ON аттестация.`зачетная/табельный`=пользователи.`зачетная/табельный` WHERE аттестация.семестр = @s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1", db.getConnection());
+                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    StudentcomboBox.Items.Add(reader.GetString("фамилия") + " " + reader.GetString("имя") + " " + reader.GetString("отчество"));
+                    StudentidcomboBox.Items.Add(reader.GetString("зачетная/табельный"));
+                }
+                db.closeConnection();
+                command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1 GROUP BY аттестация.дисциплина_план_id", db.getConnection());
+                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DisciplineprintcomboBox.Items.Add(reader.GetString("наименование") + "/" + reader.GetString("индекс"));
+                    DisciplinePrintidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                }
+                db.closeConnection();
             }
-            db.closeConnection();
-            command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1 GROUP BY аттестация.дисциплина_план_id", db.getConnection());
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
-            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
-            db.openConnection();
-            reader = command.ExecuteReader();
-            while (reader.Read())
+            if (DataCheck.TypeOfUser == "Студент")
             {
-                DisciplineprintcomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
-                DisciplinePrintidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1 GROUP BY аттестация.дисциплина_план_id", db.getConnection());
+                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DisciplinecomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                    DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                }
+                db.closeConnection();
             }
-            db.closeConnection();
         }
         private void StudentcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            StudentidcomboBox.SelectedIndex = StudentcomboBox.SelectedIndex;
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND аттестация.`зачетная/табельный` = @zt AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1", db.getConnection());
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
-            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
-            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
-            db.openConnection();
-            MySqlDataReader reader = command.ExecuteReader();
-            while (reader.Read())
+            if (DataCheck.TypeOfUser != "Преподаватель")
             {
-                DisciplinecomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
-                DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                StudentidcomboBox.SelectedIndex = StudentcomboBox.SelectedIndex;
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id=учебныйплан.дисциплина_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id WHERE аттестация.семестр=@s AND аттестация.`зачетная/табельный` = @zt AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1", db.getConnection());
+                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
+                command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DisciplinecomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                    DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                }
+                db.closeConnection();
             }
-            db.closeConnection();
-
+            else
+            {
+                StudentidcomboBox.SelectedIndex = StudentcomboBox.SelectedIndex;
+                DB db = new DB();
+                MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, аттестация.дисциплина_план_id, учебныйплан.индекс FROM аттестация INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = аттестация.дисциплина_план_id INNER JOIN группы ON группы.группа_id = учебныйплан.группа_id INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id INNER JOIN преподавательидисциплина ON преподавательидисциплина.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` WHERE аттестация.семестр = @s AND группы.группа_id = @gid AND аттестация.курсовая_работа = 1 AND пользователи.статус_пользователя = 'Преподаватель' AND авторизация.логин = @l AND аттестация.`зачетная/табельный`=@zt", db.getConnection());
+                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
+                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrComboBox.Text;
+                command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+                command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+                db.openConnection();
+                MySqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    DisciplinecomboBox.Items.Add(reader.GetString("индекс") + "/" + reader.GetString("наименование"));
+                    DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
+                }
+                db.closeConnection();
+            }
         }
         private void DisciplinecomboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {

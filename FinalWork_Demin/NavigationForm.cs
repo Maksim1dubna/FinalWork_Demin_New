@@ -8,7 +8,7 @@ namespace FinalWork_Demin
         public NavigationForm()
         {
             InitializeComponent();
-            if (DataCheck.TypeOfUser != "Админ" && DataCheck.TypeOfUser != "Уч.часть")
+            if (DataCheck.TypeOfUser != "Админ" && DataCheck.TypeOfUser != "Уч.часть") // проверка типа вошедшего пользователя по статическому классу Datacheck в данном случае, кто не является администратором или руководителем учебной части не могут переходить на окна добавления начальных данных, занятия и преподаватели, регистрацию пользователя
             {
                 AddNewDatalabel.Enabled = false;
                 AddNewDatalabel.Visible = false;
@@ -49,7 +49,7 @@ namespace FinalWork_Demin
 
         private void VisitsAndProgresslabel_Click(object sender, EventArgs e)
         {
-            if (DataCheck.TypeOfUser == "Студент")
+            if (DataCheck.TypeOfUser == "Студент") // если пользователь является студетом, то он переходит в специальное окно для посещения
             {
                 this.Hide();
                 VisitsForStudentsForm visitsandprogress = new VisitsForStudentsForm();
@@ -74,8 +74,8 @@ namespace FinalWork_Demin
             this.Hide();
             LoginForm registrationForm = new LoginForm();
             registrationForm.Show();
-            DataCheck.L = "";
-            DataCheck.TypeOfUser = "";
+            DataCheck.L = ""; // очитстка логина
+            DataCheck.TypeOfUser = ""; // очитстка типа пользователя
         }
 
         private void NavigationForm_FormClosed(object sender, FormClosedEventArgs e)

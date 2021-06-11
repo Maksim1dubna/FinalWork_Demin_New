@@ -21,7 +21,7 @@ namespace FinalWork_Demin
         }
         private void buttonLogin_Click(object sender, EventArgs e)
         {
-            if (loginField.Text == "" || PassField.Text == "")
+            if (loginField.Text == "" || PassField.Text == "") // Выдача сообщения если пароль и логин небыли введены
             {
                 MessageBox.Show("Введите логин и пароль");
                 return;
@@ -31,7 +31,7 @@ namespace FinalWork_Demin
             DB db = new DB();
             DataTable table = new DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
-            if(StudentradioButton.Checked == true)
+            if(StudentradioButton.Checked == true) // проверка на существование пользователя студент по таблице базы данных пользователи
             {
                 MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
@@ -52,7 +52,7 @@ namespace FinalWork_Demin
                     MessageBox.Show("Empty");
                 db.closeConnection();
             }
-            if (LecturerradioButton.Checked == true)
+            if (LecturerradioButton.Checked == true) // проверка на существование пользователя преподаватель по таблице базы данных пользователи
             {
                 MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
@@ -73,7 +73,7 @@ namespace FinalWork_Demin
                     MessageBox.Show("Empty");
                 db.closeConnection();
             }
-            if (AdminradioButton.Checked == true)
+            if (AdminradioButton.Checked == true) // проверка на существование пользователя администратор по таблице базы данных пользователи
             {
                 MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
@@ -94,7 +94,7 @@ namespace FinalWork_Demin
                     MessageBox.Show("Empty");
                 db.closeConnection();
             }
-            if (DirectorradioButton.Checked == true)
+            if (DirectorradioButton.Checked == true) // проверка на существование пользователя учебная часть по таблице базы данных пользователи
             {
                 MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
@@ -103,7 +103,7 @@ namespace FinalWork_Demin
                 db.openConnection();
                 adapter.SelectCommand = command;
                 adapter.Fill(table);
-                if (table.Rows.Count > 0)
+                if (table.Rows.Count > 0) // присваивание типа пользователя и логина пользователя полям класса DataCheck и переход в следующую форму
                 {
                     DataCheck.TypeOfUser = AdminradioButton.Text;
                     DataCheck.L = loginField.Text;
@@ -115,7 +115,7 @@ namespace FinalWork_Demin
                     MessageBox.Show("Empty");
                 db.closeConnection();
             }
-            if (LecturerradioButton.Checked == false && StudentradioButton.Checked == false && AdminradioButton.Checked == false && DirectorradioButton.Checked==false)
+            if (LecturerradioButton.Checked == false && StudentradioButton.Checked == false && AdminradioButton.Checked == false && DirectorradioButton.Checked==false) // проверка на выбор типа пользователя
                 MessageBox.Show("Выберите тип пользователя");
         }
         

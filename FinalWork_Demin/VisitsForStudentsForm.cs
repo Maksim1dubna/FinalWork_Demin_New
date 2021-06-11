@@ -20,165 +20,101 @@ namespace FinalWork_Demin
         }
         private void CountMisses()
         {
-            string[] StudentString = StudentsComboBox.Text.Split(' ');
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT COUNT(visit) AS visit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND visits.visit = 0 AND lections.semestr = @s AND disciplines.nameofdiscipline = @nod AND lections.numoflesson = visits.numoflesson", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
+            MySqlCommand command = new MySqlCommand("SELECT COUNT(посещение) AS пропуски FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND посещения.посещение = 0 AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid AND посещения.`зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                MissesofGrouptextBox.Text = reader.GetString("visit");
+                MissesofPersontextBox.Text = reader.GetString("пропуски");
             }
             db.closeConnection();
-            command = new MySqlCommand("SELECT COUNT(visit) AS visit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND visits.visit = 0 AND lections.semestr = @s AND disciplines.nameofdiscipline = @nod AND visits.student_id = @sid AND lections.numoflesson = visits.numoflesson", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
+            command = new MySqlCommand("SELECT COUNT(посещение) AS все FROM `посещения` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE занятия.группа_id = @gid AND занятия.семестр = @s AND занятия.дисциплина_план_id = @dpid AND посещения.`зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
-            command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = StudentString[4];
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
             db.openConnection();
             reader = command.ExecuteReader();
             while (reader.Read())
             {
-                MissesofPersontextBox.Text = reader.GetString("visit");
-            }
-            db.closeConnection();
-            command = new MySqlCommand("SELECT COUNT(visit) AS visit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND lections.semestr = @s AND disciplines.nameofdiscipline = @nod AND lections.numoflesson = visits.numoflesson", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
-            db.openConnection();
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                AllLessonsofGrouptextBox.Text = reader.GetString("visit");
-            }
-            db.closeConnection();
-            command = new MySqlCommand("SELECT COUNT(visit) AS visit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND lections.semestr = @s AND disciplines.nameofdiscipline = @nod AND visits.student_id = @sid AND lections.numoflesson = visits.numoflesson", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
-            command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = StudentString[4];
-            db.openConnection();
-            reader = command.ExecuteReader();
-            while (reader.Read())
-            {
-                AllVisitsofStudenttextBox.Text = reader.GetString("visit");
+                AllVisitsofStudenttextBox.Text = reader.GetString("все");
             }
             db.closeConnection();
         }
         private void LoadDataInto()
         {
-            if (DataCheck.TypeOfUser == "Студент")
-            {
-                VisitsAndProgressDataGridView.ReadOnly = true;
-                DB db = new DB();
-                MySqlCommand command = new MySqlCommand("SELECT groups.nameofgroup FROM groups INNER JOIN students ON students.group_id = groups.group_id WHERE students.login = @l", db.getConnection());
-                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
-                db.openConnection();
-                MySqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    GroupComboBox.Items.Add(reader.GetString("nameofgroup"));
-                }
-                db.closeConnection();
-                TypeOfUserlabel.Text = DataCheck.TypeOfUser;
-                GroupComboBox.SelectedIndex = 0;
-            }
-            this.VisitsAndProgressDataGridView.Columns[0].Visible = false;
-            this.VisitsAndProgressDataGridView.Columns[1].Visible = false;
-            this.VisitsAndProgressDataGridView.Columns[2].Visible = false;
-            this.VisitsAndProgressDataGridView.Columns[5].Visible = false;
-        }
-        private void GroupComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SemestrcomboBox.Items.Clear();
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT semestr FROM lections INNER JOIN groups ON groups.group_id=lections.group_id WHERE groups.nameofgroup = @nog GROUP BY semestr", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
+            MySqlCommand command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный` FROM `пользователи` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` WHERE пользователи.статус_пользователя='Студент' AND авторизация.логин = @l", db.getConnection());
+            command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
             db.openConnection();
             MySqlDataReader reader = command.ExecuteReader();
             while (reader.Read())
             {
-                SemestrcomboBox.Items.Add(reader.GetString("semestr"));
+                StudentsComboBox.Items.Add(reader.GetString("фамилия") + " " + reader.GetString("имя") + " " + reader.GetString("отчество"));
+                StudentidcomboBox.Items.Add(reader.GetString("зачетная/табельный"));
             }
             db.closeConnection();
-            SemestrcomboBox.SelectedIndex = 0;
+            StudentsComboBox.SelectedIndex = 0;
         }
-
+        private void StudentsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            StudentidcomboBox.SelectedIndex = StudentsComboBox.SelectedIndex;
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT имя_группы, группы.группа_id FROM группы INNER JOIN группаистудент ON группаистудент.группа_id = группы.группа_id WHERE группаистудент.`зачетная/табельный` = @zt", db.getConnection());
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                GroupComboBox.Items.Add(reader.GetString("имя_группы"));
+                GroupidcomboBox.Items.Add(reader.GetString("группа_id"));
+            }
+            db.closeConnection();
+            GroupComboBox.SelectedIndex = 0;
+        }
+        private void GroupComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GroupidcomboBox.SelectedIndex = GroupComboBox.SelectedIndex;
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT семестр FROM занятия WHERE группа_id = @gid GROUP BY семестр", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                SemestrcomboBox.Items.Add(reader.GetString("семестр"));
+            }
+            db.closeConnection();
+        }
         private void SemestrcomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DisciplinecomboBox.Items.Clear();
-            StudentsComboBox.Items.Clear();
-            if (DataCheck.TypeOfUser == "Студент")
+            DB db = new DB();
+            MySqlCommand command = new MySqlCommand("SELECT дисциплины.наименование, учебныйплан.индекс, занятия.дисциплина_план_id FROM занятия INNER JOIN учебныйплан ON учебныйплан.дисциплина_план_id = занятия.дисциплина_план_id INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id WHERE занятия.семестр = @s AND занятия.группа_id = @gid GROUP BY занятия.дисциплина_план_id", db.getConnection());
+            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
             {
-                DB db = new DB();
-                MySqlCommand command = new MySqlCommand("SELECT disciplines.nameofdiscipline FROM disciplines INNER JOIN lections ON " +
-                    "lections.discipline_id = disciplines.discipline_id INNER JOIN groups ON groups.group_id = lections.group_id " +
-                    "WHERE groups.nameofgroup = @nog AND lections.semestr=@s GROUP BY disciplines.discipline_id", db.getConnection());
-                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-                command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
-                db.openConnection();
-                MySqlDataReader reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    DisciplinecomboBox.Items.Add(reader.GetString("nameofdiscipline"));
-                }
-                db.closeConnection();
-                command = new MySqlCommand("SELECT secondname, firstname, thirdname, student_id FROM students INNER JOIN groups ON groups.group_id = students.group_id WHERE groups.nameofgroup = @nog AND students.login = @l GROUP BY students.student_id ORDER BY secondname;", db.getConnection());
-                command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-                command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
-                db.openConnection();
-                int i = 1;
-                reader = command.ExecuteReader();
-                while (reader.Read())
-                {
-                    StudentsComboBox.Items.Add(i + " " + reader.GetString("secondname") + " " + reader.GetString("firstname") + " " + reader.GetString("thirdname") + " " + reader.GetString("student_id"));
-                    i++;
-                }
-                db.closeConnection();
+                DisciplinecomboBox.Items.Add(reader.GetString("наименование") + "/" + reader.GetString("индекс"));
+                DisciplineidcomboBox.Items.Add(reader.GetString("дисциплина_план_id"));
             }
-            if (StudentsComboBox.Items.Count > 0 && DisciplinecomboBox.Items.Count > 0)
-            {
-                StudentsComboBox.SelectedIndex = 0;
-                DisciplinecomboBox.SelectedIndex = 0;
-            }
+            db.closeConnection();
         }
         private void DisciplinecomboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string[] StudentString = StudentsComboBox.Text.Split(' ');
+            DisciplineidcomboBox.SelectedIndex = DisciplinecomboBox.SelectedIndex;
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT students.secondname, students.firstname, students.thirdname, visits.visit AS Посещение, lections.dateoflection AS Дата, visits.numofvisit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN students ON students.student_id = visits.student_id INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod AND students.student_id = @sid AND lections.semestr = @s", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
-            command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = StudentString[4];
+            MySqlCommand command = new MySqlCommand("SELECT занятия.номер_пары AS 'Номер пары', занятия.дата_занятия AS 'Дата занятия', посещения.посещение AS Посещение, посещения.номер_посещения FROM посещения INNER JOIN пользователи ON пользователи.`зачетная/табельный` = посещения.`зачетная/табельный` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE дисциплина_план_id = @dpid AND занятия.семестр = @s AND занятия.группа_id = @gid AND пользователи.`зачетная/табельный`=@zt", db.getConnection());
+            command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
-            db.openConnection();
-            MySqlDataReader read = command.ExecuteReader();
-            DataTable dataTable = new DataTable();
-            dataTable.Load(read);
-            VisitsAndProgressDataGridView.DataSource = dataTable;
-            db.closeConnection();
-            if (DataCheck.TypeOfUser == "Студент")
-            {
-                VisitsAndProgressDataGridView.Columns[0].Visible = false;
-                VisitsAndProgressDataGridView.Columns[1].Visible = false;
-                VisitsAndProgressDataGridView.Columns[2].Visible = false;
-            }
-            CountMisses();
-        }
-
-        private void StudentsComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string[] StudentString = StudentsComboBox.Text.Split(' ');
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT students.secondname, students.firstname, students.thirdname, visits.visit AS Посещение, lections.dateoflection AS Дата, visits.numofvisit FROM visits INNER JOIN lections ON lections.numoflesson = visits.numoflesson INNER JOIN students ON students.student_id = visits.student_id INNER JOIN groups ON groups.group_id = lections.group_id INNER JOIN disciplines ON disciplines.discipline_id = lections.discipline_id WHERE groups.nameofgroup = @nog AND disciplines.nameofdiscipline = @nod AND students.student_id = @sid AND lections.semestr = @s", db.getConnection());
-            command.Parameters.Add("@nog", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-            command.Parameters.Add("@nod", MySqlDbType.VarChar).Value = DisciplinecomboBox.Text;
-            command.Parameters.Add("@sid", MySqlDbType.VarChar).Value = StudentString[4];
-            command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
+            command.Parameters.Add("@zt", MySqlDbType.VarChar).Value = StudentidcomboBox.Text;
             db.openConnection();
             MySqlDataReader read = command.ExecuteReader();
             DataTable dataTable = new DataTable();
@@ -186,6 +122,7 @@ namespace FinalWork_Demin
             VisitsAndProgressDataGridView.DataSource = dataTable;
             db.closeConnection();
             CountMisses();
+            this.VisitsAndProgressDataGridView.Columns[3].Visible = false;
         }
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {

@@ -80,12 +80,6 @@
     <Compile Include="ExamsMarksForm.Designer.cs">
       <DependentUpon>ExamsMarksForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListOfLessonsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ListOfLessonsForm.Designer.cs">
-      <DependentUpon>ListOfLessonsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="LoginForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,9 +123,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ExamsMarksForm.resx">
       <DependentUpon>ExamsMarksForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ListOfLessonsForm.resx">
-      <DependentUpon>ListOfLessonsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
