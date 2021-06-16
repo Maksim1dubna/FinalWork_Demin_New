@@ -235,7 +235,7 @@ namespace FinalWork_Demin
             this.Semestlabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(67)))), ((int)(((byte)(151)))));
             this.Semestlabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
             this.Semestlabel.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Semestlabel.Location = new System.Drawing.Point(349, 212);
+            this.Semestlabel.Location = new System.Drawing.Point(366, 212);
             this.Semestlabel.Name = "Semestlabel";
             this.Semestlabel.Size = new System.Drawing.Size(99, 33);
             this.Semestlabel.TabIndex = 113;
@@ -257,9 +257,9 @@ namespace FinalWork_Demin
             "8",
             "9",
             "10"});
-            this.SemestrcomboBox.Location = new System.Drawing.Point(454, 212);
+            this.SemestrcomboBox.Location = new System.Drawing.Point(471, 212);
             this.SemestrcomboBox.Name = "SemestrcomboBox";
-            this.SemestrcomboBox.Size = new System.Drawing.Size(64, 33);
+            this.SemestrcomboBox.Size = new System.Drawing.Size(47, 33);
             this.SemestrcomboBox.TabIndex = 112;
             // 
             // CourseworkdateTimePicker
@@ -329,9 +329,9 @@ namespace FinalWork_Demin
             this.IndexidcomboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.IndexidcomboBox2.Enabled = false;
             this.IndexidcomboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
-            this.IndexidcomboBox2.Location = new System.Drawing.Point(256, 212);
+            this.IndexidcomboBox2.Location = new System.Drawing.Point(305, 212);
             this.IndexidcomboBox2.Name = "IndexidcomboBox2";
-            this.IndexidcomboBox2.Size = new System.Drawing.Size(87, 33);
+            this.IndexidcomboBox2.Size = new System.Drawing.Size(57, 33);
             this.IndexidcomboBox2.TabIndex = 105;
             // 
             // IndexcomboBox2
@@ -342,7 +342,7 @@ namespace FinalWork_Demin
             this.IndexcomboBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F);
             this.IndexcomboBox2.Location = new System.Drawing.Point(98, 212);
             this.IndexcomboBox2.Name = "IndexcomboBox2";
-            this.IndexcomboBox2.Size = new System.Drawing.Size(154, 33);
+            this.IndexcomboBox2.Size = new System.Drawing.Size(201, 33);
             this.IndexcomboBox2.TabIndex = 104;
             this.IndexcomboBox2.SelectedIndexChanged += new System.EventHandler(this.IndexcomboBox2_SelectedIndexChanged);
             // 

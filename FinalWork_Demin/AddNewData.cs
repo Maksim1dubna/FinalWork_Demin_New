@@ -17,16 +17,7 @@ namespace FinalWork_Demin
         }
         private void LoadDataIntoAddNewGroupForm()
         {
-            if (DataCheck.TypeOfUser != "Админ")
-            {
-                NavigationLabel.Enabled = false;
-                NavigationLabel.Visible = false;
-            }
-            else
-            {
-                NavigationLabel.Enabled = true;
-                NavigationLabel.Visible = true;
-            }
+            this.Text = "Добавление начальных данных" + "(" + DataCheck.TypeOfUser + ")";
             DirectioncomboBox1.Items.Clear();
             DirectioncomboBox2.Items.Clear();
             SpecialtyсomboBox1.Items.Clear();

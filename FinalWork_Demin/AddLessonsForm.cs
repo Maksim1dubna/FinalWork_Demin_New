@@ -18,7 +18,6 @@ namespace FinalWork_Demin
         {
             InitializeComponent();
             LoadDataIntoAddLessonsForm();
-
         }
         private void CountHours()
         {
@@ -53,6 +52,7 @@ namespace FinalWork_Demin
         }
             private void LoadDataIntoAddLessonsForm()
         {
+            this.Text = "Занятия и преподаватели" + "(" + DataCheck.TypeOfUser + ")";
             DisciplineComboBox.Items.Clear();
             GroupcomboBox.Items.Clear();
             DisciplinescomboBox.Items.Clear();
@@ -65,16 +65,6 @@ namespace FinalWork_Demin
             IndexidcomboBox2.Items.Clear();
             LecturerscomboBox.Items.Clear();
             LectureridcomboBox.Items.Clear();
-            if (DataCheck.TypeOfUser != "Админ")
-            {
-                NavigationLabel.Enabled = false;
-                NavigationLabel.Visible = false;
-            }
-            else
-            {
-                NavigationLabel.Enabled = true;
-                NavigationLabel.Visible = true;
-            }
             DayofweekcomboBox.SelectedIndex = 0;
             FormcomboBox.SelectedIndex = 0;
             DB db = new DB();
@@ -712,23 +702,43 @@ namespace FinalWork_Demin
         }
         private void PrintStudyplanbutton_Click(object sender, EventArgs e)
         {
+            DB db = new DB();
             Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application(); // Начало работы с приложением Word
             Document doc = app.Documents.Add(Visible: true);
+            doc.Sections.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+            Selection s = app.Selection;
+            s.Font.Size = 14;
+            s.Font.Name = "Times New Roman";
+            s.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphLeft;
+            MySqlCommand command = new MySqlCommand("SELECT год_поступления FROM группы WHERE группы.`группа_id` = @gid", db.getConnection());
+            command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
+            db.openConnection();
+            MySqlDataReader reader = command.ExecuteReader();
+            while (reader.Read())
+            {
+                s.TypeText("Учебная программа бакалавриата. Год поступления: " + reader.GetString("год_поступления") + "\n");
+            }
+            db.closeConnection();
+            s.TypeText(" ");
             Range newRange = doc.Range();
             newRange.InsertBreak(WdBreakType.wdSectionBreakNextPage);
-            doc.Sections.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-            DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT индекс, дисциплины.наименование, `форма контроля-экзамен`, `форма контроля-зачет`, `форма контроля-зачет с оценкой`, `форма контроля-КР`, `итого часов-по плану`, `сем.1-курс 1-лек`, `сем.1-курс 1-пр`, `сем.2-курс 1-лек`, `сем.2-курс 1-пр`, `сем.3-курс 2-лек`, `сем.3-курс 2-пр`, `сем.4-курс 2-лек`, `сем.4-курс 2-пр`, `сем.5-курс 3-лек`, `сем.5-курс 3-пр`, `сем.6-курс 3-лек`, `сем.6-курс 3-пр`, `сем.7-курс 4-лек`, `сем.7-курс 4-пр`, `сем.8-курс 4-лек`, `сем.8-курс 4-пр`, `сем.9-курс 5-лек`, `сем.9-курс 5-пр` FROM учебныйплан INNER JOIN дисциплины ON дисциплины.дисциплина_id = учебныйплан.дисциплина_id WHERE группа_id = @gid", db.getConnection());
+            command = new MySqlCommand("SELECT индекс, дисциплины.наименование, `форма контроля-экзамен`, `форма контроля-зачет`, " +
+                "`форма контроля-зачет с оценкой`, `форма контроля-КР`, `итого часов-по плану`, `сем.1-курс 1-лек`, `сем.1-курс 1-пр`, " +
+                "`сем.2-курс 1-лек`, `сем.2-курс 1-пр`, `сем.3-курс 2-лек`, `сем.3-курс 2-пр`, `сем.4-курс 2-лек`, `сем.4-курс 2-пр`, " +
+                "`сем.5-курс 3-лек`, `сем.5-курс 3-пр`, `сем.6-курс 3-лек`, `сем.6-курс 3-пр`, `сем.7-курс 4-лек`, `сем.7-курс 4-пр`, " +
+                "`сем.8-курс 4-лек`, `сем.8-курс 4-пр`, `сем.9-курс 5-лек`, `сем.9-курс 5-пр` FROM учебныйплан INNER JOIN дисциплины ON " +
+                "дисциплины.дисциплина_id = учебныйплан.дисциплина_id WHERE группа_id = @gid", db.getConnection());
             command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupPrintidcomboBox.Text;
             db.openConnection();
             System.Data.DataTable table = new System.Data.DataTable();
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             adapter.SelectCommand = command;
             adapter.Fill(table);
-            MySqlDataReader reader = command.ExecuteReader();
+            reader = command.ExecuteReader();
             int c = table.Rows.Count;
-            object start = doc.Sentences[1].Start, end = doc.Sentences[1].Start;
+            object start = doc.Sentences[4].Start, end = doc.Sentences[4].Start;
             Range r = doc.Range(ref start, ref end);
+            r.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
             Table t = r.Tables.Add(r, c+1, 25);
             t.AllowAutoFit = true;
             t.AutoFitBehavior(WdAutoFitBehavior.wdAutoFitContent);
@@ -793,7 +803,7 @@ namespace FinalWork_Demin
                 t.Cell(i, 23).Range.Text = reader.IsDBNull(22) ? "" : reader.GetString("сем.8-курс 4-лек");
                 t.Cell(i, 24).Range.Text = reader.IsDBNull(23) ? "" : reader.GetString("сем.9-курс 9-лек");
                 t.Cell(i, 25).Range.Text = reader.IsDBNull(24) ? "" : reader.GetString("сем.9-курс 9-лек");
-                i=+2;
+                i++;
             }
             db.closeConnection();
             doc.Save();

@@ -48,6 +48,7 @@ namespace FinalWork_Demin
         }
         private void LoadDataInto()
         {
+            this.Text = "Посещаемость" + "(" + DataCheck.TypeOfUser + ")";
             DB db = new DB();
             MySqlCommand command = new MySqlCommand("SELECT пользователи.фамилия, пользователи.имя, пользователи.отчество, пользователи.`зачетная/табельный` FROM `пользователи` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` WHERE пользователи.статус_пользователя='Студент' AND авторизация.логин = @l", db.getConnection());
             command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
@@ -110,7 +111,7 @@ namespace FinalWork_Demin
         {
             DisciplineidcomboBox.SelectedIndex = DisciplinecomboBox.SelectedIndex;
             DB db = new DB();
-            MySqlCommand command = new MySqlCommand("SELECT занятия.номер_пары AS 'Номер пары', занятия.дата_занятия AS 'Дата занятия', посещения.посещение AS Посещение, посещения.номер_посещения FROM посещения INNER JOIN пользователи ON пользователи.`зачетная/табельный` = посещения.`зачетная/табельный` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE дисциплина_план_id = @dpid AND занятия.семестр = @s AND занятия.группа_id = @gid AND пользователи.`зачетная/табельный`=@zt", db.getConnection());
+            MySqlCommand command = new MySqlCommand("SELECT занятия.номер_пары AS 'Номер пары', занятия.дата_занятия AS 'Дата занятия', посещения.посещение AS Посещение, посещения.номер_посещения FROM посещения INNER JOIN пользователи ON пользователи.`зачетная/табельный` = посещения.`зачетная/табельный` INNER JOIN занятия ON занятия.номер_занятия = посещения.номер_занятия WHERE дисциплина_план_id = @dpid AND занятия.семестр = @s AND занятия.группа_id = @gid AND пользователи.`зачетная/табельный`=@zt GROUP BY посещения.номер_посещения", db.getConnection());
             command.Parameters.Add("@dpid", MySqlDbType.VarChar).Value = DisciplineidcomboBox.Text;
             command.Parameters.Add("@s", MySqlDbType.VarChar).Value = SemestrcomboBox.Text;
             command.Parameters.Add("@gid", MySqlDbType.VarChar).Value = GroupidcomboBox.Text;
@@ -123,6 +124,7 @@ namespace FinalWork_Demin
             db.closeConnection();
             CountMisses();
             this.VisitsAndProgressDataGridView.Columns[3].Visible = false;
+            CountMisses();
         }
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {

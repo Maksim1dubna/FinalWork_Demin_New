@@ -33,7 +33,10 @@ namespace FinalWork_Demin
             MySqlDataAdapter adapter = new MySqlDataAdapter();
             if(StudentradioButton.Checked == true) // проверка на существование пользователя студент по таблице базы данных пользователи
             {
-                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON `пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` WHERE `логин` = @uL AND `пароль` = @uP AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
+                MySqlCommand command = new MySqlCommand("SELECT * FROM `авторизация` INNER JOIN пользователи ON " +
+                    "`пользователи`.`зачетная/табельный`=`авторизация`.`зачетная/табельный` " +
+                    "WHERE `логин` = @uL AND `пароль` = @uP " +
+                    "AND `пользователи`.`статус_пользователя` = @tou", db.getConnection());
                 command.Parameters.Add("@uL", MySqlDbType.VarChar).Value = loginUser;
                 command.Parameters.Add("@uP", MySqlDbType.VarChar).Value = passUser;
                 command.Parameters.Add("@tou", MySqlDbType.VarChar).Value = StudentradioButton.Text;
@@ -105,7 +108,7 @@ namespace FinalWork_Demin
                 adapter.Fill(table);
                 if (table.Rows.Count > 0) // присваивание типа пользователя и логина пользователя полям класса DataCheck и переход в следующую форму
                 {
-                    DataCheck.TypeOfUser = AdminradioButton.Text;
+                    DataCheck.TypeOfUser = DirectorradioButton.Text;
                     DataCheck.L = loginField.Text;
                     this.Hide();
                     NavigationForm navigationForm = new NavigationForm();

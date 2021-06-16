@@ -292,7 +292,7 @@ namespace FinalWork_Demin
             this.SetUpLabel.Name = "SetUpLabel";
             this.SetUpLabel.Size = new System.Drawing.Size(921, 64);
             this.SetUpLabel.TabIndex = 0;
-            this.SetUpLabel.Text = "Студент";
+            this.SetUpLabel.Text = "Посещаемость";
             this.SetUpLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // VisitsForStudentsForm

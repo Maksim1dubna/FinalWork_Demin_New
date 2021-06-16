@@ -21,11 +21,17 @@ namespace FinalWork_Demin
         }
         private void LoadDataIntoCourseWorksForm()
         {
+            this.Text = "Курсовые работы" + "(" + DataCheck.TypeOfUser + ")";
             DB db = new DB();
             MySqlCommand command;
             MySqlDataReader reader;
             if (DataCheck.TypeOfUser == "Админ" || DataCheck.TypeOfUser == "Уч.часть")
             {
+                if (DataCheck.TypeOfUser == "Уч.часть")
+                {
+                    MarkcomboBox.Enabled = false;
+                    ThemetextBox.Enabled = false;
+                }
                 command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE аттестация.курсовая_работа = 1 GROUP BY группы.группа_id", db.getConnection());
                 db.openConnection();
                 reader = command.ExecuteReader();
@@ -76,6 +82,13 @@ namespace FinalWork_Demin
             }
             if (DataCheck.TypeOfUser == "Преподаватель")
             {
+                Disciplinelabel.Visible = false;
+                DisciplineprintcomboBox.Enabled = false;
+                DisciplineprintcomboBox.Visible = false;
+                DisciplinePrintidcomboBox.Enabled = false;
+                DisciplinePrintidcomboBox.Visible = false;
+                Printbutton.Visible = false;
+                Printbutton.Enabled = false;
                 command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM группы INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN преподавательидисциплина ON преподавательидисциплина.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный` = преподавательидисциплина.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный` = пользователи.`зачетная/табельный` INNER JOIN аттестация ON аттестация.дисциплина_план_id = учебныйплан.дисциплина_план_id WHERE авторизация.логин = @l AND пользователи.статус_пользователя = 'Преподаватель' AND аттестация.курсовая_работа = 1 GROUP BY группы.группа_id", db.getConnection());
                 command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
                 db.openConnection();

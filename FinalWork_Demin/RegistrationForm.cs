@@ -28,6 +28,7 @@ namespace FinalWork_Demin
         }
         private void LoadDataIntoAddLessonsForm()
         {
+            this.Text = "Регистрация" + "(" + DataCheck.TypeOfUser + ")";
             if (DataCheck.TypeOfUser != "Админ")
             {
                 NavigationLabel.Enabled = false;

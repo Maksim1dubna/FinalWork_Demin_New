@@ -8,6 +8,7 @@ namespace FinalWork_Demin
         public NavigationForm()
         {
             InitializeComponent();
+            this.Text = "Навигация" + "(" + DataCheck.TypeOfUser + ")";
             if (DataCheck.TypeOfUser != "Админ" && DataCheck.TypeOfUser != "Уч.часть") // проверка типа вошедшего пользователя по статическому классу Datacheck в данном случае, кто не является администратором или руководителем учебной части не могут переходить на окна добавления начальных данных, занятия и преподаватели, регистрацию пользователя
             {
                 AddNewDatalabel.Enabled = false;

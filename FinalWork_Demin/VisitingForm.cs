@@ -45,8 +45,13 @@ namespace FinalWork_Demin
         }
         private void LoadDataInto()
         {
+            this.Text = "Посещаемость" + "(" + DataCheck.TypeOfUser + ")";
             if (DataCheck.TypeOfUser != "Преподаватель")
             {
+                if (DataCheck.TypeOfUser == "Уч.часть")
+                {
+                    VisitsAndProgressDataGridView.ReadOnly = true;
+                }
                 DB db = new DB();
                 MySqlCommand command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM занятия INNER JOIN группы ON группы.группа_id = занятия.группа_id GROUP BY группы.группа_id", db.getConnection());
                 db.openConnection();
@@ -61,7 +66,6 @@ namespace FinalWork_Demin
             }
             else
             {
-                
                 DB db = new DB();
                 MySqlCommand command = new MySqlCommand("SELECT группы.имя_группы, группы.группа_id FROM занятия INNER JOIN группы ON группы.группа_id = занятия.группа_id INNER JOIN учебныйплан ON учебныйплан.группа_id = группы.группа_id INNER JOIN преподавательидисциплина ON преподавательидисциплина.дисциплина_план_id = учебныйплан.дисциплина_план_id INNER JOIN пользователи ON пользователи.`зачетная/табельный`= преподавательидисциплина.`зачетная/табельный` INNER JOIN авторизация ON авторизация.`зачетная/табельный`= пользователи.`зачетная/табельный` WHERE пользователи.статус_пользователя = 'Преподаватель' AND авторизация.логин = @l GROUP BY группы.группа_id", db.getConnection());
                 command.Parameters.Add("@l", MySqlDbType.VarChar).Value = DataCheck.L;
@@ -208,6 +212,7 @@ namespace FinalWork_Demin
             VisitsAndProgressDataGridView.DataSource = dataTable;
             db.closeConnection();
             this.VisitsAndProgressDataGridView.Columns[5].Visible = false;
+            CountMisses();
         }
 
         private void VisitsAndProgressDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
